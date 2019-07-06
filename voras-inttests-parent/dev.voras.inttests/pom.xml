@@ -12,6 +12,5 @@
 	<artifactId>dev.voras.inttests</artifactId>
 	<version>0.3.0-SNAPSHOT</version>
 	<packaging>bundle</packaging>
-	
-	
+		
 </project>
