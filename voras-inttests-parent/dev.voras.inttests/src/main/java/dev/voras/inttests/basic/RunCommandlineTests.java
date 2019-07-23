@@ -3,25 +3,38 @@ package dev.voras.inttests.basic;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.InputStream;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 
+import com.google.gson.Gson;
+
+import dev.voras.AfterClass;
 import dev.voras.BeforeClass;
+import dev.voras.ResultArchiveStoreContentType;
 import dev.voras.Test;
+import dev.voras.TestVariation;
+import dev.voras.TestVariationProperty;
 import dev.voras.common.artifact.ArtifactManager;
 import dev.voras.common.artifact.IArtifactManager;
 import dev.voras.common.artifact.IBundleResources;
 import dev.voras.common.artifact.ISkeletonProcessor.SkeletonType;
 import dev.voras.common.ipnetwork.ICommandShell;
+import dev.voras.common.ipnetwork.IpNetworkManagerException;
 import dev.voras.common.linux.ILinuxImage;
 import dev.voras.common.linux.LinuxImage;
 import dev.voras.core.manager.Logger;
 import dev.voras.core.manager.StoredArtifactRoot;
 import dev.voras.core.manager.TestProperty;
+import dev.voras.framework.spi.teststructure.TestStructure;
+import dev.voras.framework.spi.utils.CirilloGsonBuilder;
 
 /**
  * This integration test will prove that the basic framework is working by running a 
@@ -34,27 +47,40 @@ import dev.voras.core.manager.TestProperty;
  * @author Michael Baylis
  *
  */
+@Test
+@TestVariation(name="openjdk8",
+    defaultVariation=true,
+    properties={@TestVariationProperty(property = "linux.tag.primary.capabilities", value = "java8,maven")})
+@TestVariation(name="openjdk11",
+    properties={@TestVariationProperty(property = "linux.tag.primary.capabilities", value = "java11,maven")})
+@TestVariation(name="ibmjdk8",
+    properties={@TestVariationProperty(property = "linux.tag.primary.capabilities", value = "ibmjava8,maven")})
+@TestVariation(name="ibmjdk11",
+    properties={@TestVariationProperty(property = "linux.tag.primary.capabilities", value = "ibmjava11,maven")})
 public class RunCommandlineTests {
 	
-    @Logger
-    public Log logger;
-    
-	@LinuxImage(capabilities= {"java8","maven"})
+	private final Pattern runNamePattern = Pattern.compile("\\QAllocated Run Name \\E(\\w+)\\Q to this run\\E");
+	private final Gson    gson = CirilloGsonBuilder.build();
+
+	@Logger
+	public Log logger;
+
+	@LinuxImage(imageTag="primary")
 	public ILinuxImage linuxPrimary;
-	
+
 	@StoredArtifactRoot
 	public Path storedArtifactRoot;
-	
+
 	// TODO provide direct access in CPS so we can ignore this suffix/prefix nonsense when it is a fixed property
 	@TestProperty(prefix="integrated.tests", suffix="maven.repository")
 	public String mavenRepository;  // The maven repository that contains the code we will be testing
-	
+
 	@ArtifactManager
 	public IArtifactManager artifactManager;  // TODO we should get the bundleresources object direct
-	
+
 	private ICommandShell shell; // get a command shell
 	private Path          homePath; // The home directory of the default userid
-	
+
 	/**
 	 * Set up the shell and the filesystem we will use later
 	 * 
@@ -65,11 +91,11 @@ public class RunCommandlineTests {
 		//*** Obtain the shell that we are going to use
 		shell = linuxPrimary.getCommandShell();
 		logger.info("Obtained command shell to linux server");
-		
+
 		//*** Obtain the home directory
 		this.homePath = linuxPrimary.getHome();
 	}
-	
+
 	/**
 	 * Set up the .m2/settings.xml file read for mvn commands.  The repository is provided as a test property
 	 * 
@@ -82,19 +108,19 @@ public class RunCommandlineTests {
 		if (!Files.exists(settings.getParent())) {
 			Files.createDirectory(settings.getParent());
 		}
-		
+
 		// TODO should have this as an annotated file
 		IBundleResources bundleResources = artifactManager.getBundleResources(getClass());
-		
+
 		// Get the skeleton settings.xml and provide the test repo
 		HashMap<String,Object> parameters = new HashMap<>();
 		parameters.put("vorasrepo", this.mavenRepository);		
 		InputStream is = bundleResources.retrieveSkeletonFile("settings.xml", parameters, SkeletonType.VELOCITY);		
-		
+
 		//*** Copy the file to the test system
 		Files.copy(is, settings);
 	}
-	
+
 	/**
 	 * Retreive the runtime.zip from maven and extract the voras-boot.jar file
 	 * 
@@ -108,9 +134,9 @@ public class RunCommandlineTests {
 		Path log = this.homePath.resolve("mvn.log");  // the log file
 		Path saLog = this.storedArtifactRoot.resolve("mvn.log"); // stored artifact file
 		Files.copy(log, saLog); //copy it
-		
+
 		this.logger.info("Runtime successfully download");
-		
+
 		//*** Unzip the runtime to get the voras-boot
 		response = this.shell.issueCommand("unzip -o .m2/repository/dev/voras/runtime/0.3.0-SNAPSHOT/runtime-0.3.0-SNAPSHOT.zip > unzip.log;echo zip-rc=$?");
 		assertThat(response).as("zip rc search").contains("zip-rc=0");  // check we exited 0
@@ -120,7 +146,7 @@ public class RunCommandlineTests {
 		
 		this.logger.info("voras-boot unzipped");
 	}
-	
+
 	/**
 	 * Run the CoreIVT 
 	 * 
@@ -128,7 +154,7 @@ public class RunCommandlineTests {
 	 */
 	@Test
 	public void runCoreIVT() throws Exception {
-		
+
 		// Build the command line we need to run the core ivt
 		StringBuilder sb = new StringBuilder();
 		sb.append("java ");                                                        // Run with the default java installation
@@ -142,19 +168,53 @@ public class RunCommandlineTests {
 		sb.append("--trace ");                                                     // Lets get as much bask as we can in case of failure
 		sb.append("> coreivt.log ");                                               // Save the log
 		sb.append(";echo voras-boot-rc=$?");                                       // check that the run ended with exit code 0
-		
+
 		logger.info("About to issue the command :-\n" + sb.toString());
-		
+
 		Instant start = Instant.now();
 		String response = shell.issueCommand(sb.toString());  // run the command
 		Instant end = Instant.now();
 		logger.info("Command returned - took " + (end.getEpochSecond() - start.getEpochSecond()) + " seconds to run");
-		
+
 		Path log = this.homePath.resolve("coreivt.log");  // the log file from the command
 		Path runLog = this.storedArtifactRoot.resolve("coreivt.log"); // the stored artifact
 		Files.copy(log, runLog); // copy to stored artifacts
-		
+
 		assertThat(response).as("run command").contains("voras-boot-rc=0");  // check we exited 0
+		
+		assertThat(response).as("check there were no warnings issued").doesNotContain("WARNING"); // make sure java didnt issue warnings;
+		
+		//*** Pull the run log so we can extract the run name
+		String sLog = new String(Files.readAllBytes(log));
+		Matcher matcher = runNamePattern.matcher(sLog);
+		assertThat(matcher.find()).as("Finding run name in log").isTrue(); // Check that the run name is in the log
+		String runName = matcher.group(1);
+		
+		//*** Retrieve the Test Structure
+		Path structureFile = this.homePath.resolve(".voras/ras/" + runName + "/structure.json");
+		assertThat(Files.exists(structureFile)).as("Test structure exists on test server for this run").isTrue(); // Check that the test structure exists
+		String sStructure = new String(Files.readAllBytes(structureFile));
+
+		TestStructure testStructure = gson.fromJson(sStructure, TestStructure.class);
+		
+		//*** Check the test passed
+		assertThat(testStructure.getResult()).as("The test structure indicates the test passes").isEqualTo("Passed");
+
+	}
+	
+	/**
+	 * Retrieve the voras directory including the RAS
+	 * @throws Exception 
+	 */
+	@AfterClass
+	public void getLogs() throws Exception {
+		String response = this.shell.issueCommand("zip -r -9 voras.zip .voras;echo zip-rc=$?");
+		assertThat(response).as("zip rc check is 0").contains("zip-rc=0"); // check we exited 0
+		
+		Path zip = this.homePath.resolve("voras.zip");  // the zip file
+		Path sazip = this.storedArtifactRoot.resolve("voras.zip"); // stored artifact file
+		Files.copy(zip, sazip); //copy it
+			
 	}
 
 }

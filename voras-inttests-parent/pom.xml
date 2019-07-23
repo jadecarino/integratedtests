@@ -59,6 +59,11 @@
 		</dependency>
 		<dependency>
 			<groupId>dev.voras</groupId>
+			<artifactId>dev.voras.framework</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>dev.voras</groupId>
 			<artifactId>dev.voras.core.manager</artifactId>
 			<scope>provided</scope>
 		</dependency>
