@@ -1,12 +1,10 @@
-package dev.voras.inttests.basic;
+package dev.voras.inttests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.InputStream;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -18,7 +16,6 @@ import com.google.gson.Gson;
 
 import dev.voras.AfterClass;
 import dev.voras.BeforeClass;
-import dev.voras.ResultArchiveStoreContentType;
 import dev.voras.Test;
 import dev.voras.TestVariation;
 import dev.voras.TestVariationProperty;
@@ -27,7 +24,6 @@ import dev.voras.common.artifact.IArtifactManager;
 import dev.voras.common.artifact.IBundleResources;
 import dev.voras.common.artifact.ISkeletonProcessor.SkeletonType;
 import dev.voras.common.ipnetwork.ICommandShell;
-import dev.voras.common.ipnetwork.IpNetworkManagerException;
 import dev.voras.common.linux.ILinuxImage;
 import dev.voras.common.linux.LinuxImage;
 import dev.voras.core.manager.Logger;
@@ -189,6 +185,8 @@ public class RunCommandlineTests {
 		Matcher matcher = runNamePattern.matcher(sLog);
 		assertThat(matcher.find()).as("Finding run name in log").isTrue(); // Check that the run name is in the log
 		String runName = matcher.group(1);
+		
+		logger.info("The CoreIVT test was run name " + runName);
 		
 		//*** Retrieve the Test Structure
 		Path structureFile = this.homePath.resolve(".voras/ras/" + runName + "/structure.json");
