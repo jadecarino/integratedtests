@@ -83,7 +83,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception
 	 */
-//	@BeforeClass
+	@BeforeClass
 	public void precleanDocker() throws Exception {
 		
 		logger.info("Deleting any Galasa Docker containers/images/network that could have been left hanging around");
@@ -118,7 +118,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception Catch all
 	 */
-//	@Test
+	@Test
 	public void obtainRuntimeFolder() throws Exception {
 		
 		//*** Logon to the docker repository
@@ -167,7 +167,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception catchall
 	 */
-//	@Test
+	@Test
 	public void pullAllImages() throws Exception {
 		logger.info("Pull all the required images");
 		String response = shell.issueCommand("bash -e galasa-test/docker/pull.sh;echo cmd-rc=$?", 10 * 60 * 1000);
@@ -179,7 +179,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception catchall
 	 */
-//	@Test
+	@Test
 	public void createNetwork() throws Exception {
 		logger.info("Create the Docker Network");
 		String response = shell.issueCommand("bash -e galasa-test/docker/network.sh;echo cmd-rc=$?");
@@ -193,7 +193,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception catchall
 	 */
-//	@Test
+	@Test
 	public void createVolumes() throws Exception {
 		logger.info("Create the Docker Volumes");
 		String response = shell.issueCommand("bash -e galasa-test/docker/volumes.sh;echo cmd-rc=$?");
@@ -206,7 +206,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception catchall
 	 */
-//	@Test
+	@Test
 	public void startResources() throws Exception {
 		logger.info("Start the Offical Resources Container");
 		String response = shell.issueCommand("bash -e galasa-test/docker/resources.sh;echo cmd-rc=$?");
@@ -238,7 +238,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception catchall
 	 */
-//	@Test
+	@Test
 	public void startCps() throws Exception {
 		logger.info("Start the CPS Container");
 		String response = shell.issueCommand("bash -e galasa-test/docker/cps-etcd.sh;echo cmd-rc=$?");
@@ -270,7 +270,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception catchall
 	 */
-//	@Test
+	@Test
 	public void configureCps() throws Exception {
 		logger.info("Setting the CPS configuration");
 		String response = shell.issueCommand("ETCDCTL_API=3 etcdctl put framework.dynamicstatus.store etcd:http://172.21.0.1:2379");
@@ -298,7 +298,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception catchall
 	 */
-//	@Test
+	@Test
 	public void startRas() throws Exception {
 		logger.info("Initialise the RAS Couchdb volume");
 		String response = shell.issueCommand("bash -e galasa-test/docker/ras-couchdb-init.sh;echo cmd-rc=$?");
@@ -333,7 +333,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception catchall
 	 */
-//	@Test
+	@Test
 	public void startApi() throws Exception {
 		logger.info("Start the API Container");
 		String response = shell.issueCommand("cd galasa-test/docker;bash -e api.sh;echo cmd-rc=$?");
@@ -363,7 +363,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception catchall
 	 */
-//	@Test
+	@Test
 	public void startResMon() throws Exception {
 		logger.info("Start the ResMon Container");
 		String response = shell.issueCommand("cd galasa-test/docker;bash -e resource-monitor.sh;echo cmd-rc=$?");
@@ -392,7 +392,7 @@ public class RunDockerTests {
 	 * 
 	 * @throws Exception catchall
 	 */
-//	@Test
+	@Test
 	public void startController() throws Exception {
 		logger.info("Start the Docker Controller Container");
 		String response = shell.issueCommand("cd galasa-test/docker;bash -e controller.sh;echo cmd-rc=$?");
