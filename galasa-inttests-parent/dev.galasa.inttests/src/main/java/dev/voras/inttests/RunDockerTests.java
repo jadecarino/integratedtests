@@ -11,20 +11,20 @@ import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 
-import dev.voras.BeforeClass;
-import dev.voras.ICredentialsUsernamePassword;
-import dev.voras.Test;
-import dev.voras.common.artifact.ArtifactManager;
-import dev.voras.common.artifact.IArtifactManager;
-import dev.voras.common.ipnetwork.ICommandShell;
-import dev.voras.common.ipnetwork.IpNetworkManagerException;
-import dev.voras.common.linux.ILinuxImage;
-import dev.voras.common.linux.LinuxImage;
-import dev.voras.core.manager.CoreManager;
-import dev.voras.core.manager.ICoreManager;
-import dev.voras.core.manager.Logger;
-import dev.voras.core.manager.StoredArtifactRoot;
-import dev.voras.core.manager.TestProperty;
+import dev.galasa.BeforeClass;
+import dev.galasa.ICredentialsUsernamePassword;
+import dev.galasa.Test;
+import dev.galasa.artifact.ArtifactManager;
+import dev.galasa.artifact.IArtifactManager;
+import dev.galasa.ipnetwork.ICommandShell;
+import dev.galasa.ipnetwork.IpNetworkManagerException;
+import dev.galasa.linux.ILinuxImage;
+import dev.galasa.linux.LinuxImage;
+import dev.galasa.core.manager.CoreManager;
+import dev.galasa.core.manager.ICoreManager;
+import dev.galasa.core.manager.Logger;
+import dev.galasa.core.manager.StoredArtifactRoot;
+import dev.galasa.core.manager.TestProperty;
 
 /**
  * This integration test will prove that Galasa ecosysem is working with the IVTs

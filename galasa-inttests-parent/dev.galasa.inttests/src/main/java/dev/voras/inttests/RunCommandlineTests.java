@@ -14,23 +14,23 @@ import org.apache.commons.logging.Log;
 
 import com.google.gson.Gson;
 
-import dev.voras.AfterClass;
-import dev.voras.BeforeClass;
-import dev.voras.Test;
-import dev.voras.TestVariation;
-import dev.voras.TestVariationProperty;
-import dev.voras.common.artifact.ArtifactManager;
-import dev.voras.common.artifact.IArtifactManager;
-import dev.voras.common.artifact.IBundleResources;
-import dev.voras.common.artifact.ISkeletonProcessor.SkeletonType;
-import dev.voras.common.ipnetwork.ICommandShell;
-import dev.voras.common.linux.ILinuxImage;
-import dev.voras.common.linux.LinuxImage;
-import dev.voras.core.manager.Logger;
-import dev.voras.core.manager.StoredArtifactRoot;
-import dev.voras.core.manager.TestProperty;
-import dev.voras.framework.spi.teststructure.TestStructure;
-import dev.voras.framework.spi.utils.CirilloGsonBuilder;
+import dev.galasa.AfterClass;
+import dev.galasa.BeforeClass;
+import dev.galasa.Test;
+import dev.galasa.TestVariation;
+import dev.galasa.TestVariationProperty;
+import dev.galasa.artifact.ArtifactManager;
+import dev.galasa.artifact.IArtifactManager;
+import dev.galasa.artifact.IBundleResources;
+import dev.galasa.artifact.ISkeletonProcessor.SkeletonType;
+import dev.galasa.ipnetwork.ICommandShell;
+import dev.galasa.linux.ILinuxImage;
+import dev.galasa.linux.LinuxImage;
+import dev.galasa.core.manager.Logger;
+import dev.galasa.core.manager.StoredArtifactRoot;
+import dev.galasa.core.manager.TestProperty;
+import dev.galasa.framework.spi.teststructure.TestStructure;
+import dev.galasa.framework.spi.utils.GalasaGsonBuilder;
 
 /**
  * This integration test will prove that the basic framework is working by running a 
@@ -56,7 +56,7 @@ import dev.voras.framework.spi.utils.CirilloGsonBuilder;
 public class RunCommandlineTests {
 	
 	private final Pattern runNamePattern = Pattern.compile("\\QAllocated Run Name \\E(\\w+)\\Q to this run\\E");
-	private final Gson    gson = CirilloGsonBuilder.build();
+	private final Gson    gson = GalasaGsonBuilder.build();
 
 	@Logger
 	public Log logger;
