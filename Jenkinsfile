@@ -63,14 +63,14 @@ pipeline {
       stage('Integrated Tests Maven') {
          steps {
             withSonarQubeEnv('GalasaSonarQube') {
-               dir('voras-inttests-parent') {
+               dir('galasa-inttests-parent') {
                   sh "mvn --settings ${workspace}/settings.xml -Dmaven.repo.local=${workspace}/repository -P ${mvnProfile} -B -e -fae --non-recursive ${mvnGoal}"
 
-                  dir('dev.voras.inttests') {
+                  dir('dev.galasa.inttests') {
                      sh "mvn --settings ${workspace}/settings.xml -Dmaven.repo.local=${workspace}/repository -P ${mvnProfile} -B -e -fae --non-recursive ${mvnGoal}"
                   }
 
-                  dir('dev.voras.inttests.obr') {
+                  dir('dev.galasa.inttests.obr') {
                      sh "mvn --settings ${workspace}/settings.xml -Dmaven.repo.local=${workspace}/repository -P ${mvnProfile} -B -e -fae --non-recursive ${mvnGoal}"
                   }
                }
