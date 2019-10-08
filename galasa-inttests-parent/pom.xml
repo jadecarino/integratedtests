@@ -141,6 +141,15 @@
 				<groupId>dev.galasa</groupId>
 				<artifactId>galasa-maven-plugin</artifactId>
 				<extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>build-testcatalog</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>bundletestcat</goal>
+                        </goals>
+                    </execution>
+                </executions>
 			</plugin>
 		</plugins>
 	</build>
