@@ -1,4 +1,4 @@
-def mvnProfile    = 'galasa-dev'
+def mvnProfile    = 'dev'
 
 pipeline {
 // Initially run on any agent
@@ -24,17 +24,18 @@ pipeline {
             }
          }
       }
-// If the test-preprod tag,  then set as appropriate
-//      stage('set-test-preprod') {
-//         when {
-//           environment name: 'GIT_BRANCH', value: 'origin/testpreprod'
-//         }
-//         steps {
-//            script {
-//               mvnProfile    = 'galasa-preprod'
-//            }
-//         }
-//     }
+// If it is the staging branch
+      stage('set-staging') {
+         when {
+           environment name: 'GIT_BRANCH', value: 'origin/staging'
+         }
+         steps {
+            script {
+               mvnGoal           = 'deploy'
+               mvnProfile        = 'staging'
+            }
+         }
+      }
 
 // for debugging purposes
       stage('report') {
@@ -62,17 +63,19 @@ pipeline {
       
       stage('Integrated Tests Maven') {
          steps {
-            withSonarQubeEnv('GalasaSonarQube') {
-               dir('galasa-inttests-parent') {
-                  sh "mvn --settings ${workspace}/settings.xml -Dmaven.repo.local=${workspace}/repository -P ${mvnProfile} -B -e -fae --non-recursive ${mvnGoal}"
+            withCredentials([string(credentialsId: 'galasa-gpg', variable: 'GPG')]) {
+              withSonarQubeEnv('GalasaSonarQube') {
+                 dir('galasa-inttests-parent') {
+                    sh "mvn --settings ${workspace}/settings.xml -Dmaven.repo.local=${workspace}/repository -Dgpg.skip=false -Dgpg.passphrase=$GPG -P ${mvnProfile} -B -e -fae --non-recursive ${mvnGoal}"
 
-                  dir('dev.galasa.inttests') {
-                     sh "mvn --settings ${workspace}/settings.xml -Dmaven.repo.local=${workspace}/repository -P ${mvnProfile} -B -e -fae --non-recursive ${mvnGoal}"
-                  }
+                    dir('dev.galasa.inttests') {
+                       sh "mvn --settings ${workspace}/settings.xml -Dmaven.repo.local=${workspace}/repository -Dgpg.skip=false -Dgpg.passphrase=$GPG -P ${mvnProfile} -B -e -fae --non-recursive ${mvnGoal}"
+                    }
 
-                  dir('dev.galasa.inttests.obr') {
-                     sh "mvn --settings ${workspace}/settings.xml -Dmaven.repo.local=${workspace}/repository -P ${mvnProfile} -B -e -fae --non-recursive ${mvnGoal}"
-                  }
+                    dir('dev.galasa.inttests.obr') {
+                       sh "mvn --settings ${workspace}/settings.xml -Dmaven.repo.local=${workspace}/repository -Dgpg.skip=false -Dgpg.passphrase=$GPG -P ${mvnProfile} -B -e -fae --non-recursive ${mvnGoal}"
+                    }
+                 }
                }
             }
          }
