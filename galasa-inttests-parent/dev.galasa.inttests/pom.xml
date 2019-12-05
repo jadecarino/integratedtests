@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>dev.galasa</groupId>
 		<artifactId>galasa-inttests-parent</artifactId>
-		<version>0.3.0</version>
+		<version>0.3.1</version>
 	</parent>
 	
 	<name>Galasa Integration Tests</name>
 
 	<artifactId>dev.galasa.inttests</artifactId>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 	<packaging>bundle</packaging>
 		
 </project>
