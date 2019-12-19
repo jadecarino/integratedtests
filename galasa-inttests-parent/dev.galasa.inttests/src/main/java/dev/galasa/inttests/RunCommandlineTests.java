@@ -129,7 +129,7 @@ public class RunCommandlineTests {
      * @throws Exception - standard catchall
      */
     @BeforeClass
-    public void setupVorasBoot() throws Exception {
+    public void setupGalasaBoot() throws Exception {
         // *** Retrieve the runtime zip from the maven repository
         String response = this.shell.issueCommand(
                 "mvn -B org.apache.maven.plugins:maven-dependency-plugin:2.8:get -Dartifact=dev.galasa:runtime:0.3.0-SNAPSHOT:zip > mvn.log;echo maven-rc=$?");
