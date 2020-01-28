@@ -1,5 +1,5 @@
 # Galasa Integration Tests
-This repository contains end-to-end tests for Galasa rather than the Manager-specific IVT (Installation Verification Test) tests. Includes code that enables you to run a Galasa test from a command line or from Docker.
+This repository contains the integration tests that are used to test Galasa itself. 
 
 ## Documentation
 
