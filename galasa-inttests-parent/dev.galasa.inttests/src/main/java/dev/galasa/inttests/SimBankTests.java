@@ -36,23 +36,57 @@ public class SimBankTests {
     @Test
     public void testSimbankIvt() throws GalasaEcosystemManagerException, InterruptedException, TestException {
 
+        submitTest("dev.galasa.simbanks.tests.SimBankIVT");
+        
+        logger.info("SimBankIVT test passed");
+    }
+    
+    @Test
+    public void testBasicAccountCreditTest() throws GalasaEcosystemManagerException, InterruptedException, TestException {
+
+        submitTest("dev.galasa.simbanks.tests.BasicAccountCreditTest");
+        
+        logger.info("BasicAccountCreditTest test passed");
+    }
+    
+    @Test
+    public void testProvisionedAccountCreditTests() throws GalasaEcosystemManagerException, InterruptedException, TestException {
+
+        submitTest("dev.galasa.simbanks.tests.ProvisionedAccountCreditTests");
+        
+        logger.info("ProvisionedAccountCreditTests test passed");
+    }
+    
+//    @Test
+//    public void testBatchAccountsOpenTest() throws GalasaEcosystemManagerException, InterruptedException, TestException {
+//
+//        submitTest("dev.galasa.simbanks.tests.BatchAccountsOpenTest");
+//        
+//        logger.info("BatchAccountsOpenTest test passed");
+//    }
+    
+    
+    
+    
+    private void submitTest(String testName) throws GalasaEcosystemManagerException, TestException {
         String groupName = UUID.randomUUID().toString();
+        
+        logger.info("Submitting test " + testName);
         
         ecosystem.submitRun(null, 
                 runName,
                 groupName, 
                 "dev.galasa.simbank.tests", 
-                "dev.galasa.simbanks.tests.SimBankIVT", 
+                testName, 
                 null, 
                 null, 
                 "simbank", 
                 null);
         
         JsonObject finalResponse = ecosystem.waitForGroupNames(groupName, 180);
-        finalResponse = ecosystem.getSubmittedRuns(groupName); // TODO ensure the result is written before the test is marked finished
         JsonArray runs = finalResponse.getAsJsonArray("runs");
         if (runs == null || runs.size() == 0) {
-            throw new TestException("Lost the SimBankIVT test, last response was:-\n" + finalResponse);
+            throw new TestException("Lost the " + testName + " test, last response was:-\n" + finalResponse);
         }
         
         if (runs.size() != 1) {
@@ -67,9 +101,7 @@ public class SimBankTests {
         
         if (!"Passed".equals(result.getAsString())) {
             throw new TestException("Run did not pass, last response was:-\n" + finalResponse);
-        }
-        
-        logger.info("SimBankIVT test passed");
+        }   
     }
     
 }
