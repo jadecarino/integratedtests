@@ -209,6 +209,12 @@
 							<goal>bundletestcat</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>process-resources</id>
+						<goals>
+							<goal>gitcommithash</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
