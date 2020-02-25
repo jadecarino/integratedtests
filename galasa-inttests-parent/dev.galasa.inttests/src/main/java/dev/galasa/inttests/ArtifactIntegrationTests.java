@@ -25,7 +25,7 @@ import dev.galasa.kubernetes.KubernetesNamespace;
 
 @Test
 @Summary("Run Artifact IVT tests in a provisioned Galasa Ecosystem")
-public class AfrtifactIntegrationTests {
+public class ArtifactIntegrationTests {
 
     @Logger
     public Log logger;
