@@ -36,7 +36,7 @@ public class SimBankIntegrationTests {
     @Test
     public void testSimbankIvt() throws GalasaEcosystemManagerException, InterruptedException, TestException {
 
-        submitTest("dev.galasa.simbanks.tests.SimBankIVT");
+        submitTest("dev.galasa.simbank.tests.SimBankIVT");
         
         logger.info("SimBankIVT test passed");
     }
@@ -44,7 +44,7 @@ public class SimBankIntegrationTests {
     @Test
     public void testBasicAccountCreditTest() throws GalasaEcosystemManagerException, InterruptedException, TestException {
 
-        submitTest("dev.galasa.simbanks.tests.BasicAccountCreditTest");
+        submitTest("dev.galasa.simbank.tests.BasicAccountCreditTest");
         
         logger.info("BasicAccountCreditTest test passed");
     }
@@ -52,7 +52,7 @@ public class SimBankIntegrationTests {
     @Test
     public void testProvisionedAccountCreditTests() throws GalasaEcosystemManagerException, InterruptedException, TestException {
 
-        submitTest("dev.galasa.simbanks.tests.ProvisionedAccountCreditTests");
+        submitTest("dev.galasa.simbank.tests.ProvisionedAccountCreditTests");
         
         logger.info("ProvisionedAccountCreditTests test passed");
     }
@@ -60,7 +60,7 @@ public class SimBankIntegrationTests {
 //    @Test
 //    public void testBatchAccountsOpenTest() throws GalasaEcosystemManagerException, InterruptedException, TestException {
 //
-//        submitTest("dev.galasa.simbanks.tests.BatchAccountsOpenTest");
+//        submitTest("dev.galasa.simbank.tests.BatchAccountsOpenTest");
 //        
 //        logger.info("BatchAccountsOpenTest test passed");
 //    }
