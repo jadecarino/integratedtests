@@ -11,6 +11,10 @@
 	<!-- If updating version, reflect change in build/docker/testcatalogs/pom.xml -->
 	<version>0.7.0-SNAPSHOT</version>
 	<packaging>galasa-obr</packaging>
+	
+	<properties>
+		<galasa.test.stream>galasainttests</galasa.test.stream>
+	</properties>
 
 	<dependencies>
 		<dependency>
