@@ -151,6 +151,11 @@
 		</dependency>
 		<dependency>
 			<groupId>dev.galasa</groupId>
+			<artifactId>dev.galasa.docker.manager</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>dev.galasa</groupId>
 			<artifactId>dev.galasa.galasaecosystem.manager</artifactId>
 			<scope>provided</scope>
 		</dependency>
