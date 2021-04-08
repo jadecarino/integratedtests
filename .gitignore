@@ -17,3 +17,5 @@ Snap.*
 bin/
 lib/
 dependency-reduced-pom.xml
+build/
+.gradle/
