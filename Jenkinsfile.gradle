@@ -2,9 +2,9 @@ pipeline {
 // Initially run on any agent
    agent any
    environment {
-//Configure Maven from the maven tooling in Jenkins
-      def mvnHome = tool 'Default'
-      PATH = "${mvnHome}/bin:${env.PATH}"
+      // Configure Gradle from the tools definition in Jenkins
+      def gradleHome = tool 'gradle'
+      PATH = "${gradleHome}/bin:${env.PATH}"
       
 //Set some defaults
       def workspace = pwd()
@@ -14,6 +14,8 @@ pipeline {
       stage('prep-workspace') { 
          steps {
             configFileProvider([configFile(fileId: '86dde059-684b-4300-b595-64e83c2dd217', targetLocation: 'settings.xml')]) {
+            }
+            configFileProvider([configFile(fileId: 'galasa-init-gradle', targetLocation: '.gradle/init.gradle')]) {
             }
             dir('repository/dev.galasa') {
                deleteDir()
