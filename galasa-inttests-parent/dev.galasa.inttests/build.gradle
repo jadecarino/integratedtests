@@ -1,5 +1,6 @@
 plugins {
     id 'biz.aQute.bnd.builder' version '5.3.0'
+    id 'dev.galasa.tests'
 }
 
 description = 'Galasa Integration Tests'
