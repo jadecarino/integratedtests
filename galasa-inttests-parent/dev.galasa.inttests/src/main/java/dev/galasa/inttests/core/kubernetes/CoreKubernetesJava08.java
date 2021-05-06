@@ -1,4 +1,9 @@
-package dev.galasa.inttests;
+/*
+ * Licensed Materials - Property of IBM
+ * 
+ * (c) Copyright IBM Corp. 2020,2021.
+ */
+package dev.galasa.inttests.core.kubernetes;
 
 import java.util.UUID;
 
@@ -8,17 +13,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import dev.galasa.Summary;
 import dev.galasa.Test;
 import dev.galasa.core.manager.Logger;
 import dev.galasa.core.manager.RunName;
 import dev.galasa.galasaecosystem.GalasaEcosystemManagerException;
 import dev.galasa.galasaecosystem.IKubernetesEcosystem;
 import dev.galasa.galasaecosystem.KubernetesEcosystem;
+import dev.galasa.inttests.TestException;
 import dev.galasa.kubernetes.IKubernetesNamespace;
 import dev.galasa.kubernetes.KubernetesNamespace;
 
 @Test
-public class SimBankIntegrationTests {
+@Summary("Run Core IVT tests in a provisioned Galasa Ecosystem")
+public class CoreKubernetesJava08 {
 
     @Logger
     public Log logger;
@@ -34,38 +42,12 @@ public class SimBankIntegrationTests {
     
     
     @Test
-    public void testSimbankIvt() throws GalasaEcosystemManagerException, InterruptedException, TestException {
+    public void testCoreManagerIVT() throws GalasaEcosystemManagerException, InterruptedException, TestException {
 
-        submitTest("dev.galasa.simbank.tests.SimBankIVT");
+        submitTest("dev.galasa.core.manager.ivt.CoreManagerIVT");
         
-        logger.info("SimBankIVT test passed");
+        logger.info("CoreManagerIVT test passed");
     }
-    
-    @Test
-    public void testBasicAccountCreditTest() throws GalasaEcosystemManagerException, InterruptedException, TestException {
-
-        submitTest("dev.galasa.simbank.tests.BasicAccountCreditTest");
-        
-        logger.info("BasicAccountCreditTest test passed");
-    }
-    
-    @Test
-    public void testProvisionedAccountCreditTests() throws GalasaEcosystemManagerException, InterruptedException, TestException {
-
-        submitTest("dev.galasa.simbank.tests.ProvisionedAccountCreditTests");
-        
-        logger.info("ProvisionedAccountCreditTests test passed");
-    }
-    
-//    @Test
-//    public void testBatchAccountsOpenTest() throws GalasaEcosystemManagerException, InterruptedException, TestException {
-//
-//        submitTest("dev.galasa.simbank.tests.BatchAccountsOpenTest");
-//        
-//        logger.info("BatchAccountsOpenTest test passed");
-//    }
-    
-    
     
     
     private void submitTest(String testName) throws GalasaEcosystemManagerException, TestException {
@@ -76,11 +58,11 @@ public class SimBankIntegrationTests {
         ecosystem.submitRun(null, 
                 runName,
                 groupName, 
-                "dev.galasa.simbank.tests", 
+                "dev.galasa.core.manager.ivt", 
                 testName, 
                 null, 
                 null, 
-                "simbank", 
+                null, 
                 null);
         
         JsonObject finalResponse = ecosystem.waitForGroupNames(groupName, 180);
@@ -103,5 +85,7 @@ public class SimBankIntegrationTests {
             throw new TestException("Run did not pass, last response was:-\n" + finalResponse);
         }   
     }
+    
+
     
 }

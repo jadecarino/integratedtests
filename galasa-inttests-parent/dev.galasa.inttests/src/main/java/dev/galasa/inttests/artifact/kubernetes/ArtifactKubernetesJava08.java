@@ -1,9 +1,9 @@
 /*
  * Licensed Materials - Property of IBM
  * 
- * (c) Copyright IBM Corp. 2020.
+ * (c) Copyright IBM Corp. 2020,2021.
  */
-package dev.galasa.inttests;
+package dev.galasa.inttests.artifact.kubernetes;
 
 import java.util.UUID;
 
@@ -20,12 +20,13 @@ import dev.galasa.core.manager.RunName;
 import dev.galasa.galasaecosystem.GalasaEcosystemManagerException;
 import dev.galasa.galasaecosystem.IKubernetesEcosystem;
 import dev.galasa.galasaecosystem.KubernetesEcosystem;
+import dev.galasa.inttests.TestException;
 import dev.galasa.kubernetes.IKubernetesNamespace;
 import dev.galasa.kubernetes.KubernetesNamespace;
 
 @Test
-@Summary("Run Core IVT tests in a provisioned Galasa Ecosystem")
-public class CoreIntegrationTests {
+@Summary("Run Artifact IVT tests in a provisioned Galasa Ecosystem")
+public class ArtifactKubernetesJava08 {
 
     @Logger
     public Log logger;
@@ -41,11 +42,11 @@ public class CoreIntegrationTests {
     
     
     @Test
-    public void testCoreManagerIVT() throws GalasaEcosystemManagerException, InterruptedException, TestException {
+    public void testArtifactManagerIVT() throws GalasaEcosystemManagerException, InterruptedException, TestException {
 
-        submitTest("dev.galasa.core.manager.ivt.CoreManagerIVT");
+        submitTest("dev.galasa.artifact.manager.ivt.ArtifactManagerIVT");
         
-        logger.info("CoreManagerIVT test passed");
+        logger.info("ArtifactManagerIVT test passed");
     }
     
     
@@ -57,7 +58,7 @@ public class CoreIntegrationTests {
         ecosystem.submitRun(null, 
                 runName,
                 groupName, 
-                "dev.galasa.core.manager.ivt", 
+                "dev.galasa.artifact.manager.ivt", 
                 testName, 
                 null, 
                 null, 
