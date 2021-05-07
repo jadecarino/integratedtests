@@ -1,6 +1,7 @@
 package dev.galasa.inttests.artifact.local;
 
 import dev.galasa.Test;
+import dev.galasa.TestAreas;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
 import dev.galasa.galasaecosystem.ILocalEcosystem;
 import dev.galasa.galasaecosystem.LocalEcosystem;
@@ -13,6 +14,7 @@ import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
 @Test
+@TestAreas({"artifactManager", "localecosystem","java12","ubuntu"})
 public class ArtifactLocalJava12Ubuntu extends AbstractArtifactLocal {
 
     @LocalEcosystem(linuxImageTag = "PRIMARY")
