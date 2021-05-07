@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 
 import dev.galasa.Summary;
 import dev.galasa.Test;
+import dev.galasa.TestAreas;
 import dev.galasa.core.manager.Logger;
 import dev.galasa.core.manager.RunName;
 import dev.galasa.galasaecosystem.GalasaEcosystemManagerException;
@@ -26,6 +27,7 @@ import dev.galasa.kubernetes.KubernetesNamespace;
 
 @Test
 @Summary("Run Core IVT tests in a provisioned Galasa Ecosystem")
+@TestAreas({"coreManager","kubernetes","java08"})
 public class CoreKubernetesJava08 {
 
     @Logger

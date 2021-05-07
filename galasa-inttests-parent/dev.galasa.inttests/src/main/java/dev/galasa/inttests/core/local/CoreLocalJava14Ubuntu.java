@@ -6,6 +6,7 @@
 package dev.galasa.inttests.core.local;
 
 import dev.galasa.Test;
+import dev.galasa.TestAreas;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
 import dev.galasa.galasaecosystem.ILocalEcosystem;
 import dev.galasa.galasaecosystem.LocalEcosystem;
@@ -18,6 +19,7 @@ import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
 @Test
+@TestAreas({"coreManager","localecosystem","java14","ubuntu"})
 public class CoreLocalJava14Ubuntu extends AbstractCoreLocal {
 
     @LocalEcosystem(linuxImageTag = "PRIMARY")

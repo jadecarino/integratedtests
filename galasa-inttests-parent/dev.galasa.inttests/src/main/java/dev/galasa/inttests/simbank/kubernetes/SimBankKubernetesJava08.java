@@ -14,6 +14,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import dev.galasa.Test;
+import dev.galasa.TestAreas;
 import dev.galasa.core.manager.Logger;
 import dev.galasa.core.manager.RunName;
 import dev.galasa.galasaecosystem.GalasaEcosystemManagerException;
@@ -24,6 +25,7 @@ import dev.galasa.kubernetes.IKubernetesNamespace;
 import dev.galasa.kubernetes.KubernetesNamespace;
 
 @Test
+@TestAreas({"simBank","kubernetes","java08"})
 public class SimBankKubernetesJava08 {
 
     @Logger
