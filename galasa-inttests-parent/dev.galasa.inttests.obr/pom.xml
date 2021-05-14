@@ -14,7 +14,8 @@
 	
 	<properties>
 		<galasa.test.stream>galasainttests</galasa.test.stream>
-	</properties>
+       <galasa.skip.bundletestcatatlog>false</galasa.skip.bundletestcatatlog>
+    </properties>
 
 	<dependencies>
 		<dependency>
