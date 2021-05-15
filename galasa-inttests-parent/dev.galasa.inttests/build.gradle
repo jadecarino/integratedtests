@@ -5,6 +5,8 @@ plugins {
 
 description = 'Galasa Integration Tests'
 
+version = '0.15.0-SNAPSHOT'
+
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
 }
