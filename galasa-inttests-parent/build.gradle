@@ -33,6 +33,7 @@ subprojects {
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
     def mavenrepo = System.getenv('MAVEN_REPO') ?: "https://nexus.galasa.dev/repository/maven-development"
+    def maventestsrepo = System.getenv('MAVEN_TESTS_REPO') ?: "https://nexus.galasa.dev/repository/maven-tests"
 
     tasks.withType(Sign) {
         onlyIf { isReleaseVersion }
@@ -53,6 +54,9 @@ subprojects {
 
     repositories {
         maven {
+            url maventestsrepo
+        }
+        maven {
             url mavenrepo
         }
         mavenCentral()
@@ -62,70 +66,6 @@ subprojects {
         publications {
             maven(MavenPublication) {
                 from components.java
-                
-                pom {
-                    name = 'Galasa Testers Programmer Interface (TPI)'
-                    url = 'https://galasa.dev'
-                    licenses {
-                        license {
-                            name = 'Eclipse Public License - v 2.0'
-                            url = 'https://www.eclipse.org/legal/epl-2.0/t'
-                        }
-                    }
-                    developers {
-                        developer {
-                            name = 'Michael Baylis'
-                            email = 'Michael.Baylis@uk.ibm.com'
-                            organization = 'IBM'
-                            organizationUrl = 'https://www.ibm.com'
-                        }
-                        developer {
-                            name = 'William Yates'
-                            email = 'wyates@uk.ibm.com'
-                            organization = 'IBM'
-                            organizationUrl = 'https://www.ibm.com'
-                        }
-                        developer {
-                            name = 'David Roberts'
-                            email = 'david.roberts@uk.ibm.com'
-                            organization = 'IBM'
-                            organizationUrl = 'https://www.ibm.com'
-                        }
-                        developer {
-                            name = 'James Davies'
-                            email = 'james.davies@ibm.com'
-                            organization = 'IBM'
-                            organizationUrl = 'https://www.ibm.com'
-                        }
-                        developer {
-                            name = 'Matthew Chivers'
-                            email = 'matthew.chivers@ibm.com'
-                            organization = 'IBM'
-                            organizationUrl = 'https://www.ibm.com'
-                        }
-                        developer {
-                            name = 'Charlie Meek'
-                            email = 'charlie.meek@ibm.com'
-                            organization = 'IBM'
-                            organizationUrl = 'https://www.ibm.com'
-                        }
-                        developer {
-                            name = 'Diana Slepikaite'
-                            email = 'diana.slepikaite@ibm.com'
-                            organization = 'IBM'
-                            organizationUrl = 'https://www.ibm.com'
-                        }
-                    }
-                    scm {
-                        connection = 'scm:git:git:://github.com/galasa-dev/framework'
-                        developerConnection = 'scm:git:git:://github.com/galasa-dev/framework'
-                        url = 'https://github.com/galasa-dev/framework'
-                    }
-                    issueManagement {
-                        system = 'GitHub'
-                        url = 'https://github.com/galasa-dev/projectmanagement/issues'
-                    }
-                }
             }
         }
         repositories {
@@ -134,7 +74,7 @@ subprojects {
                     username System.getenv('MAVENUSERNAME')
                     password System.getenv('MAVENPASSWORD')
                 }
-                url = mavenrepo
+                url = maventestsrepo
             }
         }
     }
