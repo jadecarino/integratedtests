@@ -5,8 +5,6 @@
  */
 package dev.galasa.inttests.http.local;
 
-import dev.galasa.Test;
-import dev.galasa.TestAreas;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
 import dev.galasa.galasaecosystem.ILocalEcosystem;
 import dev.galasa.galasaecosystem.LocalEcosystem;
@@ -18,8 +16,7 @@ import dev.galasa.linux.ILinuxImage;
 import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
-@Test
-@TestAreas({"httpManager","localecosystem","java09","ubuntu"})
+// Withdrawn from service because the certificate database of Java 11 is not maintained
 public class HttpLocalJava09Ubuntu extends AbstractHttpLocal {
 
     @LocalEcosystem(linuxImageTag = "PRIMARY")

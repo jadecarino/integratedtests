@@ -15,7 +15,7 @@ import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
 @Test
-@TestAreas({"artifactManager", "localecosystem","java11","ubuntu",",mvp"})
+@TestAreas({"artifactManager", "localecosystem","java11","ubuntu","mvp"})
 public class ArtifactLocalJava11UbuntuMvp extends AbstractArtifactLocal {
 
     @LocalEcosystem(linuxImageTag = "PRIMARY", isolationInstallation = IsolationInstallation.Mvp)

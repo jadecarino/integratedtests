@@ -15,7 +15,7 @@ import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
 @Test
-@TestAreas({"coreManager","localecosystem","java11","ubuntu",",mvp"})
+@TestAreas({"coreManager","localecosystem","java11","ubuntu","mvp"})
 public class CoreLocalJava11UbuntuMvp extends AbstractCoreLocal {
 
     @LocalEcosystem(linuxImageTag = "PRIMARY", isolationInstallation = IsolationInstallation.Mvp)
