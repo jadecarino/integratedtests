@@ -3,7 +3,7 @@
  * 
  * (c) Copyright IBM Corp. 2021.
  */
-package dev.galasa.inttests.artifact;
+package dev.galasa.inttests.zos3270;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,16 +12,16 @@ import com.google.gson.JsonObject;
 import dev.galasa.Test;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
 
-public abstract class AbstractArtifactLocal {
+public abstract class AbstractZos3270Local {
     
     @Test
-    public void testArtifactIvtTest() throws Exception {
+    public void testZos3270IvtTest() throws Exception {
         
         String runName = getEcosystem().submitRun(null, 
                 null, 
                 null, 
-                "dev.galasa.artifact.manager.ivt", 
-                "dev.galasa.artifact.manager.ivt.ArtifactManagerIVT", 
+                "dev.galasa.zos3270.manager.ivt", 
+                "dev.galasa.zos3270.manager.ivt.Zos3270IVT", 
                 null, 
                 null, 
                 null, 
