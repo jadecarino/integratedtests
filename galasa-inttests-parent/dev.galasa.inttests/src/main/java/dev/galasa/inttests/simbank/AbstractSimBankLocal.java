@@ -46,7 +46,7 @@ public abstract class AbstractSimBankLocal {
                 "dev.galasa.simbank.tests.BasicAccountCreditTest", 
                 null, 
                 null, 
-                null, 
+                "simbank", 
                 null);
         
         JsonObject run = getEcosystem().waitForRun(runName);
@@ -66,7 +66,7 @@ public abstract class AbstractSimBankLocal {
                 "dev.galasa.simbank.tests.ProvisionedAccountCreditTests", 
                 null, 
                 null, 
-                null, 
+                "simbank", 
                 null);
         
         JsonObject run = getEcosystem().waitForRun(runName);
