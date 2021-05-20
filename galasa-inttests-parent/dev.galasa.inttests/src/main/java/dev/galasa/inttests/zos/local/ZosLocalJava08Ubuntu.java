@@ -1,11 +1,11 @@
-package dev.galasa.inttests.zos3270.local;
+package dev.galasa.inttests.zos.local;
 
 import dev.galasa.Test;
 import dev.galasa.TestAreas;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
 import dev.galasa.galasaecosystem.ILocalEcosystem;
 import dev.galasa.galasaecosystem.LocalEcosystem;
-import dev.galasa.inttests.artifact.AbstractArtifactLocal;
+import dev.galasa.inttests.zos.AbstractZosLocal;
 import dev.galasa.java.JavaVersion;
 import dev.galasa.java.ubuntu.IJavaUbuntuInstallation;
 import dev.galasa.java.ubuntu.JavaUbuntuInstallation;
@@ -16,10 +16,10 @@ import dev.galasa.zos.IZosImage;
 import dev.galasa.zos.ZosImage;
 
 @Test
-@TestAreas({"zos3270Manager", "localecosystem","java08","ubuntu"})
-public class Zos3270LocalJava08Ubuntu extends AbstractArtifactLocal {
+@TestAreas({"zosManager","localecosystem","java08","ubuntu"})
+public class ZosLocalJava08Ubuntu extends AbstractZosLocal {
 
-    @LocalEcosystem(linuxImageTag = "PRIMARY", addDefaultZosImage = "PRIMARY")
+    @LocalEcosystem(linuxImageTag = "PRIMARY")
     public ILocalEcosystem ecosystem;
     
     @LinuxImage(operatingSystem = OperatingSystem.ubuntu)
