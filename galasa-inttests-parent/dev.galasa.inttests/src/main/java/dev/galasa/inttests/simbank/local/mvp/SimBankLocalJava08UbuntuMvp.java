@@ -20,8 +20,8 @@ import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
 @Test
-@TestAreas({"simplatform","localecosystem","java11","ubuntu","mvp"})
-public class SimBankLocalJava11Ubuntu extends AbstractSimBankLocal {
+@TestAreas({"simplatform","localecosystem","java08","ubuntu","mvp"})
+public class SimBankLocalJava08UbuntuMvp extends AbstractSimBankLocal {
 
     @LocalEcosystem(linuxImageTag = "PRIMARY", startSimPlatform = true, isolationInstallation = IsolationInstallation.Mvp)
     public ILocalEcosystem ecosystem;
@@ -29,7 +29,7 @@ public class SimBankLocalJava11Ubuntu extends AbstractSimBankLocal {
     @LinuxImage(operatingSystem = OperatingSystem.ubuntu)
     public ILinuxImage linuxImage;
     
-    @JavaUbuntuInstallation(javaVersion = JavaVersion.v11)
+    @JavaUbuntuInstallation(javaVersion = JavaVersion.v8)
     public IJavaUbuntuInstallation java;
 
     @Override
