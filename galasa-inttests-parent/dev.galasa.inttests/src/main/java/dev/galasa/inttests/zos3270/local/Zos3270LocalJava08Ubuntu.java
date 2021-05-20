@@ -14,7 +14,7 @@ import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
 @Test
-@TestAreas({"zos3270Manager", "localecosystem","java11","ubuntu"})
+@TestAreas({"zos3270Manager", "localecosystem","java08","ubuntu"})
 public class Zos3270LocalJava08Ubuntu extends AbstractArtifactLocal {
 
     @LocalEcosystem(linuxImageTag = "PRIMARY")
@@ -23,7 +23,7 @@ public class Zos3270LocalJava08Ubuntu extends AbstractArtifactLocal {
     @LinuxImage(operatingSystem = OperatingSystem.ubuntu)
     public ILinuxImage linuxImage;
     
-    @JavaUbuntuInstallation(javaVersion = JavaVersion.v11)
+    @JavaUbuntuInstallation(javaVersion = JavaVersion.v8)
     public IJavaUbuntuInstallation java;
 
     @Override
