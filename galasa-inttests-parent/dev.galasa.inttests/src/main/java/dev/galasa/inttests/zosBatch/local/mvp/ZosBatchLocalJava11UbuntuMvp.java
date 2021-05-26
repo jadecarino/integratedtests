@@ -1,9 +1,10 @@
-package dev.galasa.inttests.zosBatch.local;
+package dev.galasa.inttests.zosBatch.local.mvp;
 
 import dev.galasa.Test;
 import dev.galasa.TestAreas;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
 import dev.galasa.galasaecosystem.ILocalEcosystem;
+import dev.galasa.galasaecosystem.IsolationInstallation;
 import dev.galasa.galasaecosystem.LocalEcosystem;
 import dev.galasa.inttests.zosBatch.AbstractZosBatchLocal;
 import dev.galasa.java.JavaVersion;
@@ -16,18 +17,18 @@ import dev.galasa.zos.IZosImage;
 import dev.galasa.zos.ZosImage;
 
 @Test
-@TestAreas({"zosManager","localecosystem","java15","ubuntu"})
-public class ZosLocalJava15Ubuntu extends AbstractZosBatchLocal {
+@TestAreas({"zosManager","localecosystem","java11","ubuntu","mvp"})
+public class ZosBatchLocalJava11UbuntuMvp extends AbstractZosBatchLocal {
 
-    @LocalEcosystem(linuxImageTag = "PRIMARY")
+    @LocalEcosystem(linuxImageTag = "PRIMARY", isolationInstallation = IsolationInstallation.Mvp, addDefaultZosImage = "PRIMARY")
     public ILocalEcosystem ecosystem;
     
-    @LinuxImage(operatingSystem = OperatingSystem.ubuntu)
+    @LinuxImage(operatingSystem = OperatingSystem.ubuntu, capabilities = "isolated")
     public ILinuxImage linuxImage;
     
-    @JavaUbuntuInstallation(javaVersion = JavaVersion.v15)
+    @JavaUbuntuInstallation(javaVersion = JavaVersion.v11)
     public IJavaUbuntuInstallation java;
-
+    
     @ZosImage
     public IZosImage zosImage;
 

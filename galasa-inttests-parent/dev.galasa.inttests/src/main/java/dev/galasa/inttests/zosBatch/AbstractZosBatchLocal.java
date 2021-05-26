@@ -15,7 +15,7 @@ import dev.galasa.galasaecosystem.IGenericEcosystem;
 public abstract class AbstractZosBatchLocal {
     
     @Test
-    public void testCoreIvtTest() throws Exception {
+    public void testZosBatchIvtTest() throws Exception {
         
         String runName = getEcosystem().submitRun(null, 
                 null, 
