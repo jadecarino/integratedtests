@@ -16,16 +16,16 @@ import dev.galasa.zos.IZosImage;
 import dev.galasa.zos.ZosImage;
 
 @Test
-@TestAreas({"zosManager","localecosystem","java12","ubuntu"})
-public class ZosLocalJava12Ubuntu extends AbstractZosBatchLocal {
+@TestAreas({"zosManager","localecosystem","java11","ubuntu"})
+public class ZosBatchLocalJava11Ubuntu extends AbstractZosBatchLocal {
 
-    @LocalEcosystem(linuxImageTag = "PRIMARY")
+    @LocalEcosystem(linuxImageTag = "PRIMARY", addDefaultZosImage = "PRIMARY")
     public ILocalEcosystem ecosystem;
     
     @LinuxImage(operatingSystem = OperatingSystem.ubuntu)
     public ILinuxImage linuxImage;
     
-    @JavaUbuntuInstallation(javaVersion = JavaVersion.v12)
+    @JavaUbuntuInstallation(javaVersion = JavaVersion.v11)
     public IJavaUbuntuInstallation java;
 
     @ZosImage
