@@ -32,9 +32,6 @@ subprojects {
 
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
-    def mavenrepo = System.getenv('MAVEN_REPO') ?: "https://nexus.galasa.dev/repository/maven-development"
-    def maventestsrepo = System.getenv('MAVEN_TESTS_REPO') ?: "https://nexus.galasa.dev/repository/maven-tests"
-
     tasks.withType(Sign) {
         onlyIf { isReleaseVersion }
     }
@@ -54,12 +51,11 @@ subprojects {
 
     repositories {
         maven {
-            url maventestsrepo
+            url "$sourceMaven"
         }
         maven {
-            url mavenrepo
+            url "$centralMaven"
         }
-        mavenCentral()
     }
 
     publishing {
@@ -70,11 +66,14 @@ subprojects {
         }
         repositories {
             maven {
-                credentials {
-                    username System.getenv('MAVENUSERNAME')
-                    password System.getenv('MAVENPASSWORD')
+                url  = "$targetMaven"
+            
+                if ("$targetMaven".startsWith('http')) {
+                    credentials {
+                        username System.getenv('MAVENUSERNAME')
+                        password System.getenv('MAVENPASSWORD')
+                    }
                 }
-                url = maventestsrepo
             }
         }
     }
@@ -85,22 +84,22 @@ subprojects {
     }
 
     dependencies {
-        compileOnly 'dev.galasa:dev.galasa:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.framework:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.core.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.zos.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.ipnetwork.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.http.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.artifact.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.linux.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.windows.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.openstack.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.kubernetes.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.docker.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.galasaecosystem.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.java.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.java.ubuntu.manager:0.15.0-SNAPSHOT'
-        compileOnly 'dev.galasa:dev.galasa.java.windows.manager:0.15.0-SNAPSHOT'
+        compileOnly 'dev.galasa:dev.galasa:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.framework:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.core.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.zos.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.ipnetwork.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.http.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.artifact.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.linux.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.windows.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.openstack.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.kubernetes.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.docker.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.galasaecosystem.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.java.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.java.ubuntu.manager:0.15.0'
+        compileOnly 'dev.galasa:dev.galasa.java.windows.manager:0.15.0'
         compileOnly 'commons-logging:commons-logging:1.2'
         compileOnly 'org.assertj:assertj-core:3.11.0'
         compileOnly 'javax.validation:validation-api:2.0.1.Final'
