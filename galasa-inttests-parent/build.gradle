@@ -78,10 +78,10 @@ subprojects {
         }
     }
 
-    signing {
-        useGpgCmd() 
-        sign publishing.publications.maven 
-    }
+ //   signing {
+ //       useGpgCmd() 
+ //       sign publishing.publications.maven 
+ //   }
 
     dependencies {
         compileOnly 'dev.galasa:dev.galasa:0.15.0'
