@@ -16,7 +16,7 @@ public abstract class AbstractArtifactLocal {
     
     @Test
     public void testArtifactIvtTest() throws Exception {
-        
+        xxxx
         String runName = getEcosystem().submitRun(null, 
                 null, 
                 null, 
