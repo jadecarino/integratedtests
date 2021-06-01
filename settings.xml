@@ -11,6 +11,10 @@
             </activation>
             <repositories>
                 <repository>
+                    <id>release</id>
+                    <url>${galasa.release.repo}</url>
+                </repository>
+                <repository>
                     <id>galasa.source.repo</id>
                     <url>${galasa.source.repo}</url>
                 </repository>
