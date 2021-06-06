@@ -3,7 +3,7 @@
  * 
  * (c) Copyright IBM Corp. 2021.
  */
-package dev.galasa.inttests.zosBatch;
+package dev.galasa.inttests.zosFileDataset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,19 +12,17 @@ import com.google.gson.JsonObject;
 import dev.galasa.Test;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
 
-public abstract class AbstractZosBatchLocal {
+public abstract class AbstractZosFileDatasetLocal {
     
     @Test
-    public void testZosBatchTestZOSMF() throws Exception {
-    	
-    	//default to z/OSMF batch
-    	getEcosystem().setCpsProperty("zos.bundle.extra.batch.manager", "dev.galasa.zosbatch.zosmf.manager");
+    public void testZosFileIvtTestZOSMF() throws Exception {
+    	getEcosystem().setCpsProperty("zos.bundle.extra.file.manager", "dev.galasa.zosfile.zosmf.manager");
         
         String runName = getEcosystem().submitRun(null, 
                 null, 
                 null, 
                 "dev.galasa.zos.manager.ivt", 
-                "dev.galasa.zos.manager.ivt.ZosManagerBatchIVT", 
+                "dev.galasa.zos.manager.ivt.ZosManagerFileDatasetIVT", 
                 null, 
                 null, 
                 null, 
@@ -38,16 +36,14 @@ public abstract class AbstractZosBatchLocal {
     }
     
     @Test
-    public void testZosBatchIvtTestRSE() throws Exception {
-    	
-    	//Use RSE batch
-    	getEcosystem().setCpsProperty("zos.bundle.extra.batch.manager", "dev.galasa.zosbatch.rseapi.manager");
+    public void testZosFileIvtTestRSE() throws Exception {
+    	getEcosystem().setCpsProperty("zos.bundle.extra.file.manager", "dev.galasa.zosfile.rseapi.manager");
         
         String runName = getEcosystem().submitRun(null, 
                 null, 
                 null, 
                 "dev.galasa.zos.manager.ivt", 
-                "dev.galasa.zos.manager.ivt.ZosManagerBatchIVT", 
+                "dev.galasa.zos.manager.ivt.ZosManagerFileDatasetIVT", 
                 null, 
                 null, 
                 null, 
