@@ -15,7 +15,29 @@ import dev.galasa.galasaecosystem.IGenericEcosystem;
 public abstract class AbstractZosFileLocal {
     
     @Test
-    public void testZosFileIvtTest() throws Exception {
+    public void testZosFileIvtTestZOSMF() throws Exception {
+    	getEcosystem().setCpsProperty("zos.bundle.extra.file.manager", "dev.galasa.zosfile.zosmf.manager");
+        
+        String runName = getEcosystem().submitRun(null, 
+                null, 
+                null, 
+                "dev.galasa.zos.manager.ivt", 
+                "dev.galasa.zos.manager.ivt.ZosManagerFileIVT", 
+                null, 
+                null, 
+                null, 
+                null);
+        
+        JsonObject run = getEcosystem().waitForRun(runName);
+        
+        String result = run.get("result").getAsString();
+        
+        assertThat(result).as("The test indicates the test passes").isEqualTo("Passed");
+    }
+    
+    @Test
+    public void testZosFileIvtTestRSE() throws Exception {
+    	getEcosystem().setCpsProperty("zos.bundle.extra.file.manager", "dev.galasa.zosfile.rseapi.manager");
         
         String runName = getEcosystem().submitRun(null, 
                 null, 
