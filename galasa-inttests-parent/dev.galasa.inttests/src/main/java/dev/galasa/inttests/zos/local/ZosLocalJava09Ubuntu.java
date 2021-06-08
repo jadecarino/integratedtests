@@ -19,7 +19,7 @@ import dev.galasa.zos.ZosImage;
 @TestAreas({"zosManager","localecosystem","java09","ubuntu"})
 public class ZosLocalJava09Ubuntu extends AbstractZosLocal {
 
-    @LocalEcosystem(linuxImageTag = "PRIMARY")
+    @LocalEcosystem(linuxImageTag = "PRIMARY", addDefaultZosImage = "PRIMARY")
     public ILocalEcosystem ecosystem;
     
     @LinuxImage(operatingSystem = OperatingSystem.ubuntu)

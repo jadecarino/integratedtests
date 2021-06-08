@@ -20,7 +20,7 @@ import dev.galasa.zos.ZosImage;
 @TestAreas({"zosManager","localecosystem","java11","ubuntu","isolated"})
 public class ZosLocalJava11UbuntuIsolated extends AbstractZosLocal {
 
-    @LocalEcosystem(linuxImageTag = "PRIMARY", isolationInstallation = IsolationInstallation.Full)
+    @LocalEcosystem(linuxImageTag = "PRIMARY", addDefaultZosImage = "PRIMARY", isolationInstallation = IsolationInstallation.Full)
     public ILocalEcosystem ecosystem;
     
     @LinuxImage(operatingSystem = OperatingSystem.ubuntu, capabilities = "isolated")
