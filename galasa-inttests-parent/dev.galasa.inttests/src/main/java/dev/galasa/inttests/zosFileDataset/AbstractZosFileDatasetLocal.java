@@ -9,10 +9,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.gson.JsonObject;
 
+import dev.galasa.BeforeClass;
 import dev.galasa.Test;
+import dev.galasa.core.manager.CoreManager;
+import dev.galasa.core.manager.ICoreManager;
+import dev.galasa.galasaecosystem.GalasaEcosystemManagerException;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
 
 public abstract class AbstractZosFileDatasetLocal {
+	@CoreManager
+	public ICoreManager coreManager;
+			
+	
+	@BeforeClass
+	public void setupRunID() throws GalasaEcosystemManagerException {
+		String runName = coreManager.getRunName();
+		getEcosystem().setCpsProperty("IVT.RUN.NAME", runName);
+	}
     
     @Test
     public void testZosFileIvtTestZOSMF() throws Exception {
