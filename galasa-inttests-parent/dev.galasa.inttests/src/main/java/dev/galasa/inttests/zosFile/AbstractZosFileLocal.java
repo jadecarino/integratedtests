@@ -24,7 +24,7 @@ public abstract class AbstractZosFileLocal {
 	@BeforeClass
 	public void setupRunID() throws GalasaEcosystemManagerException {
 		String runName = coreManager.getRunName();
-		getEcosystem().setCpsProperty("TEST.IVT.RUN.NAME", runName);
+		getEcosystem().setCpsProperty("test.IVT.RUN.NAME", runName);
 	}
 	
     @Test
