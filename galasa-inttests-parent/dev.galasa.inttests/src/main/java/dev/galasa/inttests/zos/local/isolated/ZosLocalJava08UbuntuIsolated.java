@@ -1,4 +1,8 @@
-package dev.galasa.inttests.zos.local.isolated;
+/*
+ * Copyright contributors to the Galasa project
+ */
+
+ package dev.galasa.inttests.zos.local.isolated;
 
 import dev.galasa.Test;
 import dev.galasa.TestAreas;
@@ -17,10 +21,10 @@ import dev.galasa.zos.IZosImage;
 import dev.galasa.zos.ZosImage;
 
 @Test
-@TestAreas({"zosManager","localecosystem","java08","ubuntu","mvp"})
+@TestAreas({"zosManager","localecosystem","java08","ubuntu","isolated"})
 public class ZosLocalJava08UbuntuIsolated extends AbstractZosLocal {
 
-    @LocalEcosystem(linuxImageTag = "PRIMARY", addDefaultZosImage = "PRIMARY", isolationInstallation = IsolationInstallation.Mvp)
+    @LocalEcosystem(linuxImageTag = "PRIMARY", addDefaultZosImage = "PRIMARY", isolationInstallation = IsolationInstallation.Full)
     public ILocalEcosystem ecosystem;
     
     @LinuxImage(operatingSystem = OperatingSystem.ubuntu, capabilities = "isolated")
