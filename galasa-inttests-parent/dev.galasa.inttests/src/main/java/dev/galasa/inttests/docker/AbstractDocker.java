@@ -11,57 +11,34 @@ import dev.galasa.ipnetwork.ICommandShell;
 public abstract class AbstractDocker {
 	
 	@Logger
-	private Log logger;
-	private ICommandShell shell;
+	public Log logger;
+	protected ICommandShell shell;
 	
-	protected void setShell(ICommandShell shell) throws Exception {
-		this.shell = shell;
-	}
-	
-	protected void updatePackageManager(String command) throws Exception {
+	protected void updatePackagetManager(String command) throws Exception {
+		logger.info("Updating the package manager");
 		shell.issueCommand(command);
-	}
-	
-	protected boolean isDockerInstalled() throws Exception {
-		logger.info("Checking Docker is installed.");
-		String res = shell.issueCommand("docker -v");	
-		if(res.contains("no such file or directory")) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 	
 	protected void installDocker(String command) throws Exception {
-		logger.info("Installing Docker");
-		shell.issueCommand(command);
-	}
-	
-	protected boolean isDockerRunning(String command) throws Exception {
-		logger.info("Checking Docker is currently running");
-		String res = shell.issueCommand(command);
-		if(res.contains("active")){
-			return true;
-		} else {
-			return false;
-		}
+		logger.info("Checking if Docker is installed");
+		String res = shell.issueCommand("docker -v");
+		if(res.contains("no such file or directory") || res.contains("not found")) {
+			logger.info("No Docker found. Installing Docker...");
+			shell.issueCommand(command);
+		} 
 	}
 	
 	protected void startDocker(String command) throws Exception {
-		logger.info("Starting Docker");
+		logger.info("Starting Docker...");
 		shell.issueCommand(command);
 	}
 	
-	protected boolean isMavenInstalled() throws Exception {
-		String res = shell.issueCommand("mvn -v");	
-		if(res.contains("no such file or directory") || res.contains("not found")) {
-			return false;
-		} else {
-			return true;
-		}
-	}
+	abstract protected void exposeDocker() throws Exception;
 	
 	protected void installMaven(String command) throws Exception {
-		shell.issueCommand(command);
+		String res = shell.issueCommand("mvn -v");	
+		if(res.contains("no such file or directory") || res.contains("not found")) {
+			shell.issueCommand(command);
+		}
 	}
 }

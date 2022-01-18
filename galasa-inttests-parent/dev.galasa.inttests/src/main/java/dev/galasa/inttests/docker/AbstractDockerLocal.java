@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 
 import dev.galasa.Test;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
+import dev.galasa.linux.ILinuxImage;
 
 public abstract class AbstractDockerLocal extends AbstractDocker {
 	
@@ -33,4 +34,6 @@ public abstract class AbstractDockerLocal extends AbstractDocker {
 	}
 	
 	abstract protected IGenericEcosystem getEcosystem() throws Exception;
+	
+	abstract protected ILinuxImage getLinuxImage() throws Exception;
 }
