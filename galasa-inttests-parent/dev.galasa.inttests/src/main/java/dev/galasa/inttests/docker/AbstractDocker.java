@@ -3,10 +3,18 @@
  */
 package dev.galasa.inttests.docker;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.commons.logging.Log;
 
+import com.google.gson.JsonObject;
+
+import dev.galasa.BeforeClass;
+import dev.galasa.Test;
 import dev.galasa.core.manager.Logger;
+import dev.galasa.galasaecosystem.IGenericEcosystem;
 import dev.galasa.ipnetwork.ICommandShell;
+import dev.galasa.linux.ILinuxImage;
 
 public abstract class AbstractDocker {
 	
@@ -14,31 +22,39 @@ public abstract class AbstractDocker {
 	public Log logger;
 	protected ICommandShell shell;
 	
-	protected void updatePackagetManager(String command) throws Exception {
-		logger.info("Updating the package manager");
-		shell.issueCommand(command);
+	final static String DOCKER_PORT = "2376";
+
+	@BeforeClass
+	public void setProps() throws Exception {
+		logger.info("Setting the CPS props for shadow environment");
+		String dockerHostname = getLinuxImage().getIpHost().getIpv4Hostname();
+		getEcosystem().setCpsProperty("docker.default.engines", "DKRTESTENGINE");
+		getEcosystem().setCpsProperty("docker.engine.DKRTESTENGINE.hostname", dockerHostname);
+		getEcosystem().setCpsProperty("docker.engine.DKRTESTENGINE.port", DOCKER_PORT);
+		getEcosystem().setCpsProperty("docker.engine.DKRTESTENGINE.max.slots", "3");
 	}
 	
-	protected void installDocker(String command) throws Exception {
-		logger.info("Checking if Docker is installed");
-		String res = shell.issueCommand("docker -v");
-		if(res.contains("no such file or directory") || res.contains("not found")) {
-			logger.info("No Docker found. Installing Docker...");
-			shell.issueCommand(command);
-		} 
+	@Test
+	public void testDockerIvtTest() throws Exception {
+		
+		String runName = getEcosystem().submitRun(null,
+				null,
+				null,
+				"dev.galasa.docker.manager.ivt", 
+                "dev.galasa.docker.manager.ivt.DockerManagerIVT", 
+                null, 
+                null, 
+                null, 
+                null);
+		
+		JsonObject run = getEcosystem().waitForRun(runName);
+        
+        String result = run.get("result").getAsString();
+        
+        assertThat(result).as("The test indicates the test passes").isEqualTo("Passed");
 	}
 	
-	protected void startDocker(String command) throws Exception {
-		logger.info("Starting Docker...");
-		shell.issueCommand(command);
-	}
+	abstract protected IGenericEcosystem getEcosystem() throws Exception;
 	
-	abstract protected void exposeDocker() throws Exception;
-	
-	protected void installMaven(String command) throws Exception {
-		String res = shell.issueCommand("mvn -v");	
-		if(res.contains("no such file or directory") || res.contains("not found")) {
-			shell.issueCommand(command);
-		}
-	}
+	abstract protected ILinuxImage getLinuxImage() throws Exception;
 }
