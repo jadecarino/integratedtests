@@ -27,7 +27,7 @@ public abstract class AbstractDocker {
 	@BeforeClass
 	public void setProps() throws Exception {
 		logger.info("Setting the CPS props for shadow environment");
-		String dockerHostname = getLinuxImage().getIpHost().getIpv4Hostname();
+		String dockerHostname = getDockerLinuxImage().getIpHost().getIpv4Hostname();
 		getEcosystem().setCpsProperty("docker.default.engines", "DKRTESTENGINE");
 		getEcosystem().setCpsProperty("docker.engine.DKRTESTENGINE.hostname", dockerHostname);
 		getEcosystem().setCpsProperty("docker.engine.DKRTESTENGINE.port", DOCKER_PORT);
@@ -56,5 +56,5 @@ public abstract class AbstractDocker {
 	
 	abstract protected IGenericEcosystem getEcosystem() throws Exception;
 	
-	abstract protected ILinuxImage getLinuxImage() throws Exception;
+	abstract protected ILinuxImage getDockerLinuxImage() throws Exception;
 }

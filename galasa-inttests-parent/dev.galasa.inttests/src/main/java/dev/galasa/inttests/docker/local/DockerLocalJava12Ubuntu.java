@@ -33,7 +33,7 @@ public class DockerLocalJava12Ubuntu extends AbstractDockerUbuntuLocal {
 	public ILinuxImage dockerLinuxImage;
 	
 	@Override
-	protected ILinuxImage getLinuxImage() throws Exception{
+	protected ILinuxImage getDockerLinuxImage() throws Exception{
 		return dockerLinuxImage;
 	}
 	
