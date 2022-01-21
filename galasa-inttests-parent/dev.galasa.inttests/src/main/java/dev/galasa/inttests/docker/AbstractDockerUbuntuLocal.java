@@ -81,16 +81,16 @@ public abstract class AbstractDockerUbuntuLocal extends AbstractDocker {
 	
 	private void installDocker() throws Exception {
 		logger.info("Updating package manager docker installation");
-		String res = shell.issueCommand("sudo apt update");
+		String res = shell.issueCommand("sudo apt -q update");
 		storeOutput("ecosystem/dockerSetup", "aptUpdate.txt", "Command: sudo apt update \nOutput:\n" + res);
 		if(!res.contains("packages can be upgraded") && !res.contains("packages are up to date")) {
 			logger.error("Updating package manager failed");
 			throw new Exception("Package manager could not be updated: " + res);
 		}
 		logger.info("Installing Docker...");
-		res = shell.issueCommand("sudo apt -y install docker.io");
+		res = shell.issueCommand("sudo apt -y -qq install docker.io");
 		storeOutput("ecosystem/dockerSetup", "installDocker.txt", "Command: sudo apt -y install docker.io \nOutput:\n" + res);
-		if(!res.contains("Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /lib/systemd/system/docker.socket")) {
+		if(!res.contains("Created symlink /etc/systemd/system/sockets.target.wants/docker.socket")) {
 			logger.error("Installing docker.io failed");
 			throw new Exception("Could not install docker.io: " + res); 
 		}
