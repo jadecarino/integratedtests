@@ -8,9 +8,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
+import org.apache.commons.io.IOUtils;
 
 import dev.galasa.BeforeClass;
 import dev.galasa.ResultArchiveStoreContentType;
@@ -20,7 +21,7 @@ import dev.galasa.core.manager.StoredArtifactRoot;
 public abstract class AbstractDockerUbuntuLocal extends AbstractDocker {
 	
 	@StoredArtifactRoot
-    public Path storedArtifactRoot;
+	public Path storedArtifactRoot;
 	
 	@BeforeClass
 	public void setupEnvironment() throws Exception {
@@ -29,45 +30,52 @@ public abstract class AbstractDockerUbuntuLocal extends AbstractDocker {
 		logger.info("Checking if docker already exists");
 		String res = shell.issueCommand("sudo docker ps");
 		if(res.contains("CONTAINER ID")) {
-			logger.info("Docker is already installed. Skipping install step.");
+			logger.info("Docker is already installed. Skipping install step");
 		} else {
 			installDocker();
 		}
 			
-		logger.info("Exposing Docker engine");
-		Path servicePath = getDockerLinuxImage().getRoot();
-		servicePath = servicePath.resolve("lib/systemd/system/docker.service");
-		Path homePath = getDockerLinuxImage().getHome();
-		homePath = homePath.resolve("docker.service");
-
-		List<String> newLines = new ArrayList<>();
-		for (String line : Files.readAllLines(servicePath, StandardCharsets.UTF_8)) {
-		    if (line.startsWith("ExecStart=")) {
-		       newLines.add(line.replace(line, "ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:" + DOCKER_PORT + " --containerd=/run/containerd/containerd.sock"));
-		    } else {
-		       newLines.add(line);
-		    }
-		}
-		Files.write(homePath, newLines, StandardCharsets.UTF_8);
-		res = shell.issueCommand("sudo mv " + homePath.toString() + " /etc/systemd/system/docker.service && echo \"Exit code:\" $?");
-		storeOutput("ecosystem/dockerSetup", "serviceFileMove.txt", "Command: sudo mv \" + homePath.toString() + \" /etc/systemd/system/docker.service \nOutput:\n" + res);
-		if(!res.contains("Exit code: 0")) {
-			logger.error("Moving updated service file failed.");
-			throw new Exception("Moving updated service file failed: " + res);
-		}
+		Path servicePath = getDockerLinuxImage().getRoot().resolve("lib/systemd/system/docker.service");
+		Path homePath = getDockerLinuxImage().getHome().resolve("docker.service");
+		Path etcServicePath = getDockerLinuxImage().getRoot().resolve("/etc/systemd/system/docker.service");
 		
-		logger.info("Restarting daemon and docker services...");
-		res = shell.issueCommand("sudo systemctl daemon-reload && echo \"Exit code:\" $?");
-		storeOutput("ecosystem/dockerSetup", "daemonReload.txt", "Command: sudo systemctl daemon-reload \nOutput:\n" + res);
-		if(!res.contains("Exit code: 0")) {
-			logger.error("Restarting daemon failed.");
-			throw new Exception("Restarting daemon failed with return code: " + res);
-		}
-		res = shell.issueCommand("sudo systemctl restart docker && echo \"Exit code:\" $?");
-		storeOutput("ecosystem/dockerSetup", "dockerSetup.txt", "Command: sudo systemctl restart docker \nOutput:\n" + res);
-		if(!res.contains("Exit code: 0")) {
-			logger.error("Restarting docker service failed.");
-			throw new Exception("Restarting docker service failed with return code: " + res);
+		if(Files.exists(etcServicePath)) {
+			String dockerEtcServiceContents = IOUtils.toString(Files.newInputStream(etcServicePath, StandardOpenOption.READ), StandardCharsets.UTF_8);
+			if(dockerEtcServiceContents.contains("tcp://0.0.0.0:" + DOCKER_PORT)) {
+				logger.info("Docker service already exposed. Skipping Expose step");
+				return;
+			}
+		} else {
+			logger.info("Exposing Docker service");
+			if(Files.exists(servicePath)) {
+				String dockerServiceContents = IOUtils.toString(Files.newInputStream(servicePath, StandardOpenOption.READ), StandardCharsets.UTF_8);		
+				if(!dockerServiceContents.contains("tcp://0.0.0.0:")) {
+					dockerServiceContents = dockerServiceContents.replace("-H fd://", "-H fd:// -H tcp://0.0.0.0:" + DOCKER_PORT);
+				}
+				Files.write(homePath, dockerServiceContents.getBytes(), StandardOpenOption.WRITE);
+			} else {
+				throw new Exception("No 'docker.service' file to modify");
+			}
+
+			res = shell.issueCommand("sudo mv " + homePath.toString() + " /etc/systemd/system/docker.service && echo \"Exit code:\" $?");
+			storeOutput("ecosystem/dockerSetup", "serviceFileMove.txt", "Command: sudo mv \" + homePath.toString() + \" /etc/systemd/system/docker.service \nOutput:\n" + res);
+			if(!res.contains("Exit code: 0")) {
+				logger.error("Moving updated service file failed");
+				throw new Exception("Moving updated service file failed: " + res);
+			}
+			logger.info("Restarting daemon and docker services...");
+			res = shell.issueCommand("sudo systemctl daemon-reload && echo \"Exit code:\" $?");
+			storeOutput("ecosystem/dockerSetup", "daemonReload.txt", "Command: sudo systemctl daemon-reload \nOutput:\n" + res);
+			if(!res.contains("Exit code: 0")) {
+				logger.error("Restarting daemon failed");
+				throw new Exception("Restarting daemon failed with return code: " + res);
+			}
+			res = shell.issueCommand("sudo systemctl restart docker && echo \"Exit code:\" $?");
+			storeOutput("ecosystem/dockerSetup", "dockerSetup.txt", "Command: sudo systemctl restart docker \nOutput:\n" + res);
+			if(!res.contains("Exit code: 0")) {
+				logger.error("Restarting docker service failed");
+				throw new Exception("Restarting docker service failed with return code: " + res);
+			}
 		}
 	}
 	
@@ -76,27 +84,33 @@ public abstract class AbstractDockerUbuntuLocal extends AbstractDocker {
 		String res = shell.issueCommand("sudo apt update");
 		storeOutput("ecosystem/dockerSetup", "aptUpdate.txt", "Command: sudo apt update \nOutput:\n" + res);
 		if(!res.contains("packages can be upgraded") && !res.contains("packages are up to date")) {
-			logger.error("Updating package manager failed.");
+			logger.error("Updating package manager failed");
 			throw new Exception("Package manager could not be updated: " + res);
 		}
 		logger.info("Installing Docker...");
 		res = shell.issueCommand("sudo apt -y install docker.io");
 		storeOutput("ecosystem/dockerSetup", "installDocker.txt", "Command: sudo apt -y install docker.io \nOutput:\n" + res);
-		if(!res.contains("Processing triggers for man-db")) {
-			logger.error("Installing docker.io failed.");
+		if(!res.contains("Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /lib/systemd/system/docker.socket")) {
+			logger.error("Installing docker.io failed");
 			throw new Exception("Could not install docker.io: " + res); 
 		}
 		logger.info("Starting Docker service...");
 		res = shell.issueCommand("sudo systemctl start docker");
 		storeOutput("ecosystem/dockerSetup", "startDocker.txt", "Command: sudo systemctl start docker \nOutput:\n" + res);
 		res = shell.issueCommand("sudo systemctl show --property ActiveState docker");	
-		long timeout = Calendar.getInstance().getTimeInMillis() + 180000; // 3 mins
-		while(!res.contains("ActiveState=active") && timeout <= Calendar.getInstance().getTimeInMillis()) {
-			res = shell.issueCommand("sudo systemctl show --property ActiveState docker");
-			if(!res.contains("ActiveState=active") || !res.contains("ActiveState=activating")) {
-				logger.error("Unknown active state.");
+		Instant expire = Instant.now().plus(3, ChronoUnit.MINUTES);
+		boolean started = false;	
+		while(Instant.now().isBefore(expire)) {
+			if(!res.contains("ActiveState=active") && !res.contains("ActiveState=activating")) {
+				logger.error("Unknown active state");
 				throw new Exception("Docker could not be started: " + res);
+			} else if (res.contains("ActiveState=active")) {
+				started = true;
 			}
+		}
+		if(!started) {
+			logger.error("Docker service did not start before the timeoout");
+			throw new Exception("Docker service did not start before the timeout");
 		}
 	}
 	
