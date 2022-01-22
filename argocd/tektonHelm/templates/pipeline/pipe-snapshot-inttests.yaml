@@ -1,0 +1,73 @@
+#
+# Licensed Materials - Property of IBM
+# 
+# (c) Copyright IBM Corp. 2021.
+#
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: snapshot-intttests
+spec:
+  workspaces:
+  - name: git-workspace
+  params:
+  - name: distBranch
+    type: string
+  - name: oldBranch
+    type: string
+    default: {{ .Values.branch }}
+#
+#
+#
+  tasks:
+#
+#
+#
+  - name: clone-argocd
+    taskRef: 
+      name: git-clone
+    params:
+    - name: url
+      value: https://github.com/galasa-dev/argocd
+    - name: revision
+      value: main
+    - name: refspec
+      value: +refs/heads/main:refs/heads/main
+    - name: depth
+      value: "1"
+    - name: subdirectory
+      value: argocd
+    workspaces:
+     - name: output
+       workspace: git-workspace
+#
+#
+#
+  - name: snapshot-inttests
+    taskRef:
+      name: snapshot-inttests
+    runAfter:
+    - clone-argocd
+    params:
+    - name: distBranch
+      value: $(params.distBranch)
+    - name: oldBranch
+      value: $(params.oldBranch)
+    - name: image
+      value: galasa-maven-inttests
+    workspaces:
+     - name: git-workspace
+       workspace: git-workspace
+#
+#
+#
+  - name: recycle-inttests
+    taskRef:
+      name: recycle-deployment
+    runAfter:
+    - snapshot-inttests
+    params:
+    - name: namespace
+      value: galasa-branch-$(params.distBranch)
+    - name: deployment
+      value: maven-inttests
