@@ -1,0 +1,27 @@
+#
+# Copyright contributors to the Galasa project 
+#
+kind: PipelineRun
+apiVersion: tekton.dev/v1beta1
+metadata:
+  generateName: snapshot-inttests-
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
+spec:
+  pipelineRef:
+    name: snapshot-inttests
+  params:
+  - name: distBranch
+    value: prod
+  podTemplate:
+  workspaces:
+  - name: git-workspace
+    volumeClaimTemplate:
+      spec:
+        storageClassName: longhorn-temp
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
