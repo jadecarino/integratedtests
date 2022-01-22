@@ -1,0 +1,12 @@
+#
+# Copyright contributors to the Galasa project 
+#
+branch: main
+
+registry: harbor-cicsk8s.hursley.ibm.com
+
+replicas:
+  important: 1
+  standard: 1
+
+endRepositoriesOnly: false
