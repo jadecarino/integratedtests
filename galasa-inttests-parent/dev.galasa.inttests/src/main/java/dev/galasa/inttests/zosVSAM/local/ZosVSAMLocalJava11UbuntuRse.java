@@ -3,7 +3,6 @@
  */
 package dev.galasa.inttests.zosVSAM.local;
 
-import dev.galasa.Tags;
 import dev.galasa.Test;
 import dev.galasa.TestAreas;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
@@ -21,7 +20,7 @@ import dev.galasa.zos.ZosImage;
 
 @Test
 @TestAreas({"zosManager","localecosystem","java11","ubuntu"})
-@Tags({"codecoverage"})
+//@Tags({"codecoverage"}) disabled until RSE stable
 public class ZosVSAMLocalJava11UbuntuRse extends AbstractZosVSAMLocalRSE {
 
     @LocalEcosystem(linuxImageTag = "PRIMARY", addDefaultZosImage = "PRIMARY")
