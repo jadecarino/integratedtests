@@ -81,9 +81,9 @@ public abstract class AbstractDockerUbuntuLocal extends AbstractDocker {
 	
 	private void installDocker() throws Exception {
 		logger.info("Updating package manager docker installation");
-		String res = shell.issueCommand("sudo apt update");
+		String res = shell.issueCommand("sudo apt-get update && echo \"Exit code:\" $?");
 		storeOutput("ecosystem/dockerSetup", "aptUpdate.txt", "Command: sudo apt update \nOutput:\n" + res);
-		if(!res.contains("packages can be upgraded") && !res.contains("packages are up to date")) {
+		if(!res.contains("Exit code: 0")) {
 			logger.error("Updating package manager failed");
 			throw new Exception("Package manager could not be updated: " + res);
 		}
