@@ -106,6 +106,7 @@ public abstract class AbstractDockerUbuntuLocal extends AbstractDocker {
 				throw new Exception("Docker could not be started: " + res);
 			} else if (res.contains("ActiveState=active")) {
 				started = true;
+				break;
 			}
 		}
 		if(!started) {
