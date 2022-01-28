@@ -99,12 +99,12 @@ public abstract class AbstractDockerUbuntuLocal extends AbstractDocker {
 		storeOutput("ecosystem/dockerSetup", "startDocker.txt", "Command: sudo systemctl start docker \nOutput:\n" + res);
 		res = shell.issueCommand("sudo systemctl show --property ActiveState docker");	
 		Instant expire = Instant.now().plus(3, ChronoUnit.MINUTES);
-		Instant trace = Instant.now().plus(1, ChronoUnit.MINUTES);
+		Instant statusReport = Instant.now().plus(1, ChronoUnit.MINUTES);
 		boolean started = false;	
 		while(Instant.now().isBefore(expire)) {
-			if (Instant.now().isAfter(trace)) {
+			if (Instant.now().isAfter(statusReport)) {
 				logger.trace("Still waiting for Docker service to start...");
-				trace = Instant.now().plus(1, ChronoUnit.MINUTES);
+				statusReport = Instant.now().plus(1, ChronoUnit.MINUTES);
 			}
 			if (!res.contains("ActiveState=active") && !res.contains("ActiveState=activating")) {
 				logger.error("Unknown active state");
