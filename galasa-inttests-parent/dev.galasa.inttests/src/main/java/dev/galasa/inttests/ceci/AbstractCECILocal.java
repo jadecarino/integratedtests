@@ -21,11 +21,15 @@ public abstract class AbstractCECILocal {
 		
 		// Properties for provisioning a CICS Region
         getEcosystem().setCpsProperty("cicsts.provision.type", getEcosystem().getHostCpsProperty("cicsts", "provision", "type"));
-        getEcosystem().setCpsProperty("cicsts.default.version", getEcosystem().getHostCpsProperty("cicsts", "default", "version"));
+        String cicstsDefaultVersion = getEcosystem().getHostCpsProperty("cicsts", "default", "version");
+        getEcosystem().setCpsProperty("cicsts.default.version", cicstsDefaultVersion);
         getEcosystem().setCpsProperty("cicsts.default.logon.initial.text", getEcosystem().getHostCpsProperty("cicsts", "default.logon", "text", "initial"));
         getEcosystem().setCpsProperty("cicsts.default.logon.gm.text", getEcosystem().getHostCpsProperty("cicsts", "default.logon", "text", "gm"));
         // Properties for SEM
-        getEcosystem().setCpsProperty("sem.internal.version." + getEcosystem().getHostCpsProperty("cicsts", "default", "version"), getEcosystem().getHostCpsProperty("sem", "internal", getEcosystem().getHostCpsProperty("cicsts", "default", "version"), "version"));
+        String semInternalVersion = getEcosystem().getHostCpsProperty("sem", "internal", cicstsDefaultVersion, "version");
+        getEcosystem().setCpsProperty("sem.internal.version." + cicstsDefaultVersion, semInternalVersion);
+        String semExternalVersion = getEcosystem().getHostCpsProperty("sem", "external", semInternalVersion, "version");
+        getEcosystem().setCpsProperty("sem.external.version." + semInternalVersion, semExternalVersion);
         getEcosystem().setCpsProperty("sem.model.url", getEcosystem().getHostCpsProperty("sem", "model", "url"));
         getEcosystem().setCpsProperty("sem.model.ports", getEcosystem().getHostCpsProperty("sem", "model", "ports"));
         getEcosystem().setCpsProperty("sem.model.applids", getEcosystem().getHostCpsProperty("sem", "model", "applids"));
