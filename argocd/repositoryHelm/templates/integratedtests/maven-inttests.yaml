@@ -27,7 +27,7 @@ spec:
         env:
         - name: CONTEXTROOT
           value: {{ .Values.branch }}/maven/inttests 
-         ports:
+        ports:
         - name: http
           containerPort: 80
           protocol: TCP
