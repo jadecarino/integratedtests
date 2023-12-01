@@ -85,6 +85,8 @@ public abstract class AbstractCECILocal {
 		if (terminalOutput != null && !terminalOutput.equals("")) {
 			getEcosystem().setCpsProperty("zos3270.terminal.output", terminalOutput);
 		}
+
+		getEcosystem().setCpsProperty("galasaecosystem.runtime.repository", "https://development.galasa.dev/iss1653/maven-repo/obr");
 	}
 
     @Test
