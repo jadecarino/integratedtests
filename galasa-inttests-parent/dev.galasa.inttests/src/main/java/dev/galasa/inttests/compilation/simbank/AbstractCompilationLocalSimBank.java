@@ -121,12 +121,9 @@ public abstract class AbstractCompilationLocalSimBank extends AbstractCompilatio
                 simplatformParent.resolve(testProjectName)
             );    
         
-        // Get /.gradle
-        logger.trace("Copying /.gradle into parent directory");
-        moveFilesOnRemote(
-                unpackedDir.resolve("simplatform-main/galasa-simbank-tests/.gradle"), 
-                simplatformParent.resolve(".gradle")
-            );    
+        // Create an empty gradle home folder, so we can add a properties files to it to control the build.
+        logger.trace("Creating an empty .gradle in the parent directory so we have a home for gradle properties.");
+        mkdirOnRemote( simplatformParent.resolve(".gradle") );    
     }
 
     /*
@@ -157,6 +154,13 @@ public abstract class AbstractCompilationLocalSimBank extends AbstractCompilatio
      */
     private void moveFilesOnRemote(Path source, Path target) throws IpNetworkManagerException, LinuxManagerException {
         String command = "mv " + source.toString() + " " + target.toString() + "; echo RC=$?";
+        logger.info("issuing command: " + command);
+        String rc = getLinuxImage().getCommandShell().issueCommand(command);
+        assertThat(rc).isEqualToIgnoringWhitespace("RC=0");
+    }
+
+    private void mkdirOnRemote(Path target) throws IpNetworkManagerException, LinuxManagerException {
+        String command = "mkdir -p " + target.toString() + "; echo RC=$?";
         logger.info("issuing command: " + command);
         String rc = getLinuxImage().getCommandShell().issueCommand(command);
         assertThat(rc).isEqualToIgnoringWhitespace("RC=0");
