@@ -1,5 +1,4 @@
 -snapshot ${tstamp}
 Bundle-Name: Galasa Tester Programmer Interface (TPI)
-Import-Package: dev.galasa.framework.spi.utils
 Export-Package: dev.galasa.inttests, \
     dev.galasa.inttests.sharedenvs
