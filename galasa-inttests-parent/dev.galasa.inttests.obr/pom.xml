@@ -10,8 +10,8 @@
 
 	<properties>
 		<galasa.test.stream>inttests</galasa.test.stream>
-		<galasa.skip.bundletestcatatlog>true</galasa.skip.bundletestcatatlog>
-		<galasa.skip.deploytestcatatlog>true</galasa.skip.deploytestcatatlog>
+		<galasa.skip.bundletestcatalog>true</galasa.skip.bundletestcatalog>
+		<galasa.skip.deploytestcatalog>true</galasa.skip.deploytestcatalog>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
