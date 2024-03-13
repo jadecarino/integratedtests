@@ -127,7 +127,6 @@ function gradle_build {
     -Dorg.gradle.java.home=${JAVA_HOME} \
     -PsourceMaven=https://development.galasa.dev/main/maven-repo/managers ${OPTIONAL_DEBUG_FLAG} \
     -PcentralMaven=https://repo.maven.apache.org/maven2/ \
-    -PtargetMaven=/workspace/git/${context}/inttests/repo \
     publish publishToMavenLocal \
     "
 
