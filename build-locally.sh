@@ -125,7 +125,7 @@ function gradle_build {
     ${CONSOLE_FLAG} \
     --warning-mode=all \
     -Dorg.gradle.java.home=${JAVA_HOME} \
-    -PsourceMaven=https://development.galasa.dev/main/maven-repo/managers ${OPTIONAL_DEBUG_FLAG} \
+    -PsourceMaven=https://development.galasa.dev/main/maven-repo/obr ${OPTIONAL_DEBUG_FLAG} \
     -PcentralMaven=https://repo.maven.apache.org/maven2/ \
     publish publishToMavenLocal \
     "
@@ -144,7 +144,7 @@ function publish_artifacts {
     bootstrap=https://galasa-ecosystem1.galasa.dev/api/bootstrap
 
     cmd="mvn \
-    -Dgalasa.source.repo=https://development.galasa.dev/main/maven-repo/managers \
+    -Dgalasa.source.repo=https://development.galasa.dev/main/maven-repo/obr \
     -Dgalasa.central.repo=https://repo.maven.apache.org/maven2/ \
     -Dgalasa.release.repo=file://$BASEDIR/temp \
     -Dgalasa.bootstrap=${bootstrap} \
