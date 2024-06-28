@@ -19,6 +19,7 @@ dev.galasa.liberty.manager
 dev.galasa.linux.manager
 dev.galasa.openstack.manager
 dev.galasa.phoenix2.manager
+dev.galasa.sdv.manager
 dev.galasa.selenium.manager
 dev.galasa.textscan.manager
 dev.galasa.vtp.manager
