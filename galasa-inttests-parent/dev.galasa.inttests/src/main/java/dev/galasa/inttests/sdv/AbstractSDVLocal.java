@@ -9,6 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.gson.JsonObject;
 
+import java.util.Properties;
+
 import dev.galasa.BeforeClass;
 import dev.galasa.ProductVersion;
 import dev.galasa.Test;
@@ -20,17 +22,17 @@ import dev.galasa.galasaecosystem.IGenericEcosystem;
 
 public abstract class AbstractSDVLocal {
 
-  @CicsRegion(cicsTag = "A")
+  @CicsRegion(cicsTag = "SDVIVT")
   public ICicsRegion cics;
+
+  public Properties overrideProps;
   
   @BeforeClass
     public void setProperties() throws GalasaEcosystemManagerException, CicstsManagerException {
     // Setting these properties in the shadow ecosystem
-    getEcosystem().setCpsProperty("cicsts.provision.type", "DSE");
-    getEcosystem().setCpsProperty("cicsts.dse.tag.A.applid", cics.getApplid());
-    getEcosystem().setCpsProperty("cicsts.dse.tag.A.version", cics.getVersion().toString());
-    getEcosystem().setCpsProperty("cicsts.default.logon.initial.text", "HIT ENTER FOR LATEST STATUS");
-    getEcosystem().setCpsProperty("cicsts.default.logon.gm.text", "******\\(R)");
+    overrideProps.put("cicsts.provision.type", "DSE");
+    overrideProps.put("cicsts.default.logon.initial.text", "HIT ENTER FOR LATEST STATUS");
+    overrideProps.put("cicsts.default.logon.gm.text", "******\\\\(R)");
 
   }
         
@@ -48,7 +50,7 @@ public abstract class AbstractSDVLocal {
                     null, 
                     null, 
                     null, 
-                    null);
+                    overrideProps);
             
             JsonObject run = getEcosystem().waitForRun(runName);
             
