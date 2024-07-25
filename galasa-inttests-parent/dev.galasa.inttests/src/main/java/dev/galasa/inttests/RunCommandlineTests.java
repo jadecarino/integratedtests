@@ -43,7 +43,7 @@ import dev.galasa.framework.spi.utils.GalasaGson;
  * 
  * It will then run the IVTs from the command line.
  * 
- * @author Michael Baylis
+ *  
  *
  */
 @Test

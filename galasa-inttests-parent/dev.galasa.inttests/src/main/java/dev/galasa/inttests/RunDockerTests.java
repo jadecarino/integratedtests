@@ -40,7 +40,7 @@ import dev.galasa.core.manager.TestProperty;
  * IVTs against it in automation. Checks to see if the automation runs have been
  * fully cleaned up afterwards.
  * 
- * @author Michael Baylis
+ *  
  *
  */
 @Test
