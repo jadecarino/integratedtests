@@ -1,0 +1,64 @@
+name: PR Build
+
+on:
+    pull_request:
+        branches: [main]
+
+env:
+    IMAGE_TAG: latest
+
+jobs:
+    build-integrationtests:
+        name: Building the Integration Tests Repository
+        runs-on: ubuntu-latest
+        
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+            
+            - name: Setup JDK 
+              uses: actions/setup-java@v4
+              with:
+                java-version: '11'
+                distribution: 'semeru'
+                cache: maven
+            
+            - name: Print githash
+              run: |
+                  echo $GITHUB_SHA > ./inttests.githash
+
+            - name: Setup Gradle
+              uses: gradle/actions/setup-gradle@v3
+              with:
+                gradle-version: 6.9.2
+            
+            - name: Build Integration Tests Gradle source code
+              run: |
+                gradle publish publishToMavenLocal \
+                -PsourceMaven=https://development.galasa.dev/gh/maven-repo/obr \
+                -PcentralMaven=https://repo.maven.apache.org/maven2/ \
+                -PtargetMaven=${{github.workspace}}/repo
+            
+            - name: Building Integration Tests Maven source code
+              run: |
+                  mvn -f galasa-inttests-parent/dev.galasa.inttests.obr/pom.xml deploy -Dgpg.skip=true \
+                  -Dgalasa.source.repo=https://development.galasa.dev/gh/maven-repo/obr \
+                  -Dgalasa.central.repo=https://repo.maven.apache.org/maven2/ \
+                  -Dgalasa.release.repo=file:${{ github.workspace }}/repo \
+                  -Dgalasa.skip.deploytestcatalog=true \
+                  -Dgalasa.skip.bundletestcatalog=false \
+                  --batch-mode --errors --fail-at-end 
+            
+            - name: Build Integration Tests image for testing
+              uses: docker/build-push-action@v5
+              with:
+               context: .
+               file: dockerfiles/dockerfile.inttests
+               load: true
+               tags: intests:test
+               build-args: |
+                baseVersion=${{env.IMAGE_TAG}}
+                dockerRepository=harbor.galasa.dev
+                branch=main
+            
+            
