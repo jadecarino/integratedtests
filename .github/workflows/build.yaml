@@ -36,7 +36,7 @@ jobs:
             
             - name: Build Integration Tests Gradle source code
               run: |
-                gradle publish publishToMavenLocal \
+                gradle publish \
                 -PsourceMaven=https://development.galasa.dev/gh/maven-repo/obr \
                 -PcentralMaven=https://repo.maven.apache.org/maven2/ \
                 -PtargetMaven=${{github.workspace}}/repo
