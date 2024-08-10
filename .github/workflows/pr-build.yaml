@@ -87,7 +87,8 @@ jobs:
                   -Dgalasa.skip.deploytestcatalog=true \
                   -Dgalasa.skip.bundletestcatalog=false \
                   --batch-mode --errors --fail-at-end \
-                  --settings /home/runner/work/gpg/settings.xml
+                  --settings ${{github.workspace}}/settings.xml
+
             
             - name: Build Integration Tests image for testing
               uses: docker/build-push-action@v5
