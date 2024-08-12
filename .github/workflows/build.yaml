@@ -7,7 +7,6 @@ on:
 env:
     REGISTRY: ghcr.io
     NAMESPACE: galasa-dev
-    IMAGE_TAG: latest
 
 jobs:
     build-integrationtests:
@@ -63,7 +62,7 @@ jobs:
               id: metadata
               uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
               with:
-                images: ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/inttests-artefacts
+                images: ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/inttests-maven-artefacts
           
             - name: Build Integration Tests image for development Maven registry
               id: build
@@ -75,7 +74,7 @@ jobs:
                 tags: ${{ steps.metadata.outputs.tags }}
                 labels: ${{ steps.metadata.outputs.labels }}
                 build-args: |
-                 baseVersion=${{env.IMAGE_TAG}}
+                 baseVersion=latest
                  dockerRepository=harbor.galasa.dev
                  branch=main
             
