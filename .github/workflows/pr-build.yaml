@@ -57,7 +57,7 @@ jobs:
                tags: intests:test
                build-args: |
                 baseVersion=latest
-                dockerRepository=harbor.galasa.dev
+                dockerRepository=ghcr.io
                 branch=main
             
             
