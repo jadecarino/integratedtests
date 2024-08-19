@@ -75,7 +75,7 @@ jobs:
                 labels: ${{ steps.metadata.outputs.labels }}
                 build-args: |
                  baseVersion=latest
-                 dockerRepository=harbor.galasa.dev
+                 dockerRepository=ghcr.io
                  branch=main
             
             - name: Recycle application in ArgoCD
