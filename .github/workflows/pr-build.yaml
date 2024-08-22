@@ -16,7 +16,7 @@ jobs:
             - name: Setup JDK 
               uses: actions/setup-java@v4
               with:
-                java-version: '11'
+                java-version: '17'
                 distribution: 'semeru'
                 cache: maven
           
@@ -27,27 +27,43 @@ jobs:
             - name: Setup Gradle
               uses: gradle/actions/setup-gradle@v3
               with:
-                gradle-version: 6.9.2
+                gradle-version: 8.9
             
             - name: Build Integration Tests Gradle source code
               run: |
-                gradle -b galasa-inttests-parent/build.gradle publish publishToMavenLocal \
+                set -o pipefail
+                gradle -b galasa-inttests-parent/build.gradle publish publishToMavenLocal --info \
                 -PsourceMaven=https://development.galasa.dev/gh/maven-repo/obr \
                 -PcentralMaven=https://repo.maven.apache.org/maven2/ \
-                -PtargetMaven=${{github.workspace}}/repo
+                -PtargetMaven=${{github.workspace}}/repo 2>&1 | tee gradle-build.log
             
+            - name: Upload Gradle Build Log
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                name: inttests-gradle-build-log
+                path: gradle-build.log
+                retention-days: 7
+
             - name: Building Integration Tests Maven source code
               run: |
-                  mvn -f galasa-inttests-parent/dev.galasa.inttests.obr/pom.xml deploy -Dgpg.skip=true \
+                  mvn -f galasa-inttests-parent/dev.galasa.inttests.obr/pom.xml -X deploy -Dgpg.skip=true \
                   -Dgalasa.source.repo=https://development.galasa.dev/gh/maven-repo/obr \
                   -Dgalasa.central.repo=https://repo.maven.apache.org/maven2/ \
                   -Dgalasa.release.repo=file:${{ github.workspace }}/repo \
                   -Dgalasa.skip.deploytestcatalog=true \
                   -Dgalasa.skip.bundletestcatalog=false \
                   --batch-mode --errors --fail-at-end \
-                  --settings ${{github.workspace}}/settings.xml
-
-            
+                  --settings ${{github.workspace}}/settings.xml 2>&1 | tee maven-build.log
+                
+            - name: Upload Maven Build Log
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                name: inttests-obr-maven-build-log
+                path: maven-build.log
+                retention-days: 7
+         
             - name: Build Integration Tests image for testing
               uses: docker/build-push-action@v5
               with:
