@@ -54,7 +54,7 @@ jobs:
                   -Dgalasa.skip.deploytestcatalog=true \
                   -Dgalasa.skip.bundletestcatalog=false \
                   --batch-mode --errors --fail-at-end \
-                  --settings ${{github.workspace}}/settings.xml 2>&1 | maven-build.log
+                  --settings ${{github.workspace}}/settings.xml 2>&1 | tee maven-build.log
                 
             - name: Upload Maven Build Log
               if: failure()
