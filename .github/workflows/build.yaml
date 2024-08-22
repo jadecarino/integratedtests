@@ -45,7 +45,7 @@ jobs:
               if: failure()
               uses: actions/upload-artifact@v4
               with:
-                name: gradle-build-log
+                name: inttests-gradle-build-log
                 path: gradle-build.log
                 retention-days: 7
             
@@ -65,7 +65,7 @@ jobs:
               if: failure()
               uses: actions/upload-artifact@v4
               with:
-                name: maven-build-log
+                name: inttests-obr-maven-build-log
                 path: maven-build.log
                 retention-days: 7
             
