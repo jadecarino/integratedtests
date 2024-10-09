@@ -15,14 +15,11 @@ dev.galasa.java.ubuntu.manager
 dev.galasa.java.windows.manager
 dev.galasa.jmeter.manager
 dev.galasa.kubernetes.manager
-dev.galasa.liberty.manager
 dev.galasa.linux.manager
 dev.galasa.openstack.manager
-dev.galasa.phoenix2.manager
 dev.galasa.sdv.manager
 dev.galasa.selenium.manager
 dev.galasa.textscan.manager
-dev.galasa.vtp.manager
 dev.galasa.windows.manager
 dev.galasa.zos.manager
 dev.galasa.zos3270.manager
