@@ -19,9 +19,7 @@ import dev.galasa.BeforeClass;
 import dev.galasa.ResultArchiveStoreContentType;
 import dev.galasa.SetContentType;
 import dev.galasa.core.manager.StoredArtifactRoot;
-import dev.galasa.githubissue.GitHubIssue;
 
-@GitHubIssue( issue = "1366" )
 public abstract class AbstractDockerUbuntuLocal extends AbstractDocker {
 	
 	@StoredArtifactRoot
