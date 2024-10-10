@@ -13,6 +13,7 @@ import dev.galasa.Test;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
 import dev.galasa.githubissue.GitHubIssue;
 
+@GitHubIssue( issue = "1961" )
 public abstract class AbstractZosVSAMLocalRSE {
     
     @Test

@@ -11,7 +11,6 @@ import com.google.gson.JsonObject;
 
 import dev.galasa.Test;
 import dev.galasa.galasaecosystem.IGenericEcosystem;
-import dev.galasa.githubissue.GitHubIssue;
 
 public abstract class AbstractZosBatchLocalRSE {
     
