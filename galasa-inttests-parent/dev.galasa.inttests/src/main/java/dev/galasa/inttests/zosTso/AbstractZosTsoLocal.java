@@ -30,7 +30,7 @@ public abstract class AbstractZosTsoLocal {
         
         String result = run.get("result").getAsString();
         
-        assertThat(result).as("The test indicates the test passes").isEqualTo("Passed");
+        assertThat(result).describedAs("The test indicates the test passes").isEqualTo("Passed");
     }
 
     abstract protected IGenericEcosystem getEcosystem();

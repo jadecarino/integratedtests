@@ -40,7 +40,7 @@ public abstract class AbstractSimBankLocal {
        
        String result = run.get("result").getAsString();
        
-       assertThat(result).as("The test indicates the test passes").isEqualTo("Passed");
+       assertThat(result).describedAs("The test indicates the test passes").isEqualTo("Passed");
        
        logger.info("cache diags\n" + getEcosystem().getCommandShell().issueCommand("ls -l .galasa/felix-cache/"));
     }
@@ -63,7 +63,7 @@ public abstract class AbstractSimBankLocal {
         
         String result = run.get("result").getAsString();
         
-        assertThat(result).as("The test indicates the test passes").isEqualTo("Passed");
+        assertThat(result).describedAs("The test indicates the test passes").isEqualTo("Passed");
         logger.info("cache diags\n" + getEcosystem().getCommandShell().issueCommand("ls -l .galasa/felix-cache/"));
     }
     
@@ -85,7 +85,7 @@ public abstract class AbstractSimBankLocal {
         
         String result = run.get("result").getAsString();
         
-        assertThat(result).as("The test indicates the test passes").isEqualTo("Passed");
+        assertThat(result).describedAs("The test indicates the test passes").isEqualTo("Passed");
         logger.info("cache diags\n" + getEcosystem().getCommandShell().issueCommand("ls -l .galasa/felix-cache/"));
     }
     
