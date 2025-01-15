@@ -135,20 +135,20 @@ public class RunDockerTests {
         String response = shell
                 .issueCommand("docker login -u " + dockerCreds.getUsername() + " -p " + dockerCreds.getPassword()
                         + " cicsts-docker-local.artifactory.swg-devops.com/galasa-resources;echo cmd-rc=$?");
-        assertThat(response).as("Logon Docker").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Logon Docker").contains("cmd-rc=0"); // check we exited 0
 
         // *** Pull the resources image
         logger.info("Pulling the resources docker image");
         response = shell.issueCommand("docker pull cicsts-docker-local.artifactory.swg-devops.com/galasa-resources:"
                 + dockerVersion + ";echo cmd-rc=$?");
-        assertThat(response).as("Pull resources image").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Pull resources image").contains("cmd-rc=0"); // check we exited 0
 
         // *** run a special container for the purposes of extracting the runtime.zip
         logger.info("Starting a testing resource container");
         response = shell.issueCommand(
                 "docker run --name test-resources -d -p 8880:80 cicsts-docker-local.artifactory.swg-devops.com/galasa-resources:"
                         + dockerVersion + ";echo cmd-rc=$?");
-        assertThat(response).as("Start Test Resources image").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Start Test Resources image").contains("cmd-rc=0"); // check we exited 0
 
         // *** Create the test folder
         Path testPath = homePath.resolve("galasa-test");
@@ -159,13 +159,13 @@ public class RunDockerTests {
         response = shell.issueCommand("mvn org.apache.maven.plugins:maven-dependency-plugin:2.1:get "
                 + "-DrepoUrl=http://127.0.0.1:8880/maven "
                 + "-Dartifact=dev.galasa:runtime:0.3.0-SNAPSHOT:zip;echo cmd-rc=$?");
-        assertThat(response).as("Fetch runtime.zip").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Fetch runtime.zip").contains("cmd-rc=0"); // check we exited 0
 
         // *** Unzip the runtime.zip
         logger.info("Unzipping runtime.zip");
         response = shell.issueCommand("unzip " + "-d galasa-test "
                 + ".m2/repository/dev/galasa/runtime/0.3.0-SNAPSHOT/runtime-0.3.0-SNAPSHOT.zip;echo cmd-rc=$?");
-        assertThat(response).as("Unzip runtime.zip").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Unzip runtime.zip").contains("cmd-rc=0"); // check we exited 0
 
         logger.info("We now have the runtime.zip ready for building the Galasa Ecosystem");
     }
@@ -179,7 +179,7 @@ public class RunDockerTests {
     public void pullAllImages() throws Exception {
         logger.info("Pull all the required images");
         String response = shell.issueCommand("bash -e galasa-test/docker/pull.sh;echo cmd-rc=$?", 10 * 60 * 1000);
-        assertThat(response).as("Pull ecosystem images").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Pull ecosystem images").contains("cmd-rc=0"); // check we exited 0
     }
 
     /**
@@ -191,7 +191,7 @@ public class RunDockerTests {
     public void createNetwork() throws Exception {
         logger.info("Create the Docker Network");
         String response = shell.issueCommand("bash -e galasa-test/docker/network.sh;echo cmd-rc=$?");
-        assertThat(response).as("Create the Docker Network").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Create the Docker Network").contains("cmd-rc=0"); // check we exited 0
     }
 
     /**
@@ -203,7 +203,7 @@ public class RunDockerTests {
     public void createVolumes() throws Exception {
         logger.info("Create the Docker Volumes");
         String response = shell.issueCommand("bash -e galasa-test/docker/volumes.sh;echo cmd-rc=$?");
-        assertThat(response).as("Create the Docker Volumes").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Create the Docker Volumes").contains("cmd-rc=0"); // check we exited 0
     }
 
     /**
@@ -215,7 +215,7 @@ public class RunDockerTests {
     public void startResources() throws Exception {
         logger.info("Start the Offical Resources Container");
         String response = shell.issueCommand("bash -e galasa-test/docker/resources.sh;echo cmd-rc=$?");
-        assertThat(response).as("Start the Resources Container").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Start the Resources Container").contains("cmd-rc=0"); // check we exited 0
 
         Instant expire = Instant.now();
         expire = expire.plusSeconds(120);
@@ -231,7 +231,7 @@ public class RunDockerTests {
 
             Thread.sleep(1000);
         }
-        assertThat(started).as("Resources Container Started").isTrue();
+        assertThat(started).describedAs("Resources Container Started").isTrue();
     }
 
     /**
@@ -243,7 +243,7 @@ public class RunDockerTests {
     public void startCps() throws Exception {
         logger.info("Start the CPS Container");
         String response = shell.issueCommand("bash -e galasa-test/docker/cps-etcd.sh;echo cmd-rc=$?");
-        assertThat(response).as("Start the CPS Container").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Start the CPS Container").contains("cmd-rc=0"); // check we exited 0
 
         Instant expire = Instant.now();
         expire = expire.plusSeconds(120);
@@ -259,7 +259,7 @@ public class RunDockerTests {
 
             Thread.sleep(1000);
         }
-        assertThat(started).as("CPS Started").isTrue();
+        assertThat(started).describedAs("CPS Started").isTrue();
     }
 
     /**
@@ -272,22 +272,22 @@ public class RunDockerTests {
         logger.info("Setting the CPS configuration");
         String response = shell
                 .issueCommand("ETCDCTL_API=3 etcdctl put framework.dynamicstatus.store etcd:http://172.21.0.1:2379");
-        assertThat(response).as("Set DSS").contains("OK"); // check we exited 0
+        assertThat(response).describedAs("Set DSS").contains("OK"); // check we exited 0
 
         response = shell
                 .issueCommand("ETCDCTL_API=3 etcdctl put framework.resultarchive.store couchdb:http://172.21.0.1:5984");
-        assertThat(response).as("Set RAS").contains("OK"); // check we exited 0
+        assertThat(response).describedAs("Set RAS").contains("OK"); // check we exited 0
 
         response = shell
                 .issueCommand("ETCDCTL_API=3 etcdctl put framework.credentials.store etcd:http://172.21.0.1:2379");
-        assertThat(response).as("Set CREDS").contains("OK"); // check we exited 0
+        assertThat(response).describedAs("Set CREDS").contains("OK"); // check we exited 0
 
         response = shell
                 .issueCommand("ETCDCTL_API=3 etcdctl put framework.resource.management.dead.heartbeat.timeout 60");
-        assertThat(response).as("Set heartbeat timeout").contains("OK"); // check we exited 0
+        assertThat(response).describedAs("Set heartbeat timeout").contains("OK"); // check we exited 0
 
         response = shell.issueCommand("ETCDCTL_API=3 etcdctl put framework.resource.management.finished.timeout 60");
-        assertThat(response).as("Set finished timeout").contains("OK"); // check we exited 0
+        assertThat(response).describedAs("Set finished timeout").contains("OK"); // check we exited 0
     }
 
     /**
@@ -299,11 +299,11 @@ public class RunDockerTests {
     public void startRas() throws Exception {
         logger.info("Initialise the RAS Couchdb volume");
         String response = shell.issueCommand("bash -e galasa-test/docker/ras-couchdb-init.sh;echo cmd-rc=$?");
-        assertThat(response).as("Initialise the RAS Volume").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Initialise the RAS Volume").contains("cmd-rc=0"); // check we exited 0
 
         logger.info("Start the RAS Container");
         response = shell.issueCommand("cd galasa-test/docker;bash -e ras-couchdb.sh;echo cmd-rc=$?");
-        assertThat(response).as("Start the RAS Container").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Start the RAS Container").contains("cmd-rc=0"); // check we exited 0
 
         Instant expire = Instant.now();
         expire = expire.plusSeconds(120);
@@ -319,7 +319,7 @@ public class RunDockerTests {
 
             Thread.sleep(1000);
         }
-        assertThat(started).as("RAS Started").isTrue();
+        assertThat(started).describedAs("RAS Started").isTrue();
     }
 
     /**
@@ -331,7 +331,7 @@ public class RunDockerTests {
     public void startApi() throws Exception {
         logger.info("Start the API Container");
         String response = shell.issueCommand("cd galasa-test/docker;bash -e api.sh;echo cmd-rc=$?");
-        assertThat(response).as("Start the API Container").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Start the API Container").contains("cmd-rc=0"); // check we exited 0
 
         Instant expire = Instant.now();
         expire = expire.plusSeconds(120);
@@ -348,7 +348,7 @@ public class RunDockerTests {
 
             Thread.sleep(1000);
         }
-        assertThat(started).as("API Started").isTrue();
+        assertThat(started).describedAs("API Started").isTrue();
     }
 
     /**
@@ -360,7 +360,7 @@ public class RunDockerTests {
     public void startResMon() throws Exception {
         logger.info("Start the ResMon Container");
         String response = shell.issueCommand("cd galasa-test/docker;bash -e resource-monitor.sh;echo cmd-rc=$?");
-        assertThat(response).as("Start the ResMon Container").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Start the ResMon Container").contains("cmd-rc=0"); // check we exited 0
 
         Instant expire = Instant.now();
         expire = expire.plusSeconds(120);
@@ -376,7 +376,7 @@ public class RunDockerTests {
 
             Thread.sleep(1000);
         }
-        assertThat(started).as("ResMon Started").isTrue();
+        assertThat(started).describedAs("ResMon Started").isTrue();
     }
 
     /**
@@ -388,7 +388,7 @@ public class RunDockerTests {
     public void startController() throws Exception {
         logger.info("Start the Docker Controller Container");
         String response = shell.issueCommand("cd galasa-test/docker;bash -e controller.sh;echo cmd-rc=$?");
-        assertThat(response).as("Start the Docker Controller Container").contains("cmd-rc=0"); // check we exited 0
+        assertThat(response).describedAs("Start the Docker Controller Container").contains("cmd-rc=0"); // check we exited 0
 
         Instant expire = Instant.now();
         expire = expire.plusSeconds(120);
@@ -404,7 +404,7 @@ public class RunDockerTests {
 
             Thread.sleep(1000);
         }
-        assertThat(started).as("Docker Controller Started").isTrue();
+        assertThat(started).describedAs("Docker Controller Started").isTrue();
     }
 
     /**
@@ -432,7 +432,7 @@ public class RunDockerTests {
 
             Thread.sleep(1000);
         }
-        assertThat(started).as("CoreIVT Finished").isTrue();
+        assertThat(started).describedAs("CoreIVT Finished").isTrue();
 
         // TODO Check if passed and retrieve the run log
         // TODO Cant do that until the couchdb ras records the id in the dss
@@ -478,7 +478,7 @@ public class RunDockerTests {
 
             Thread.sleep(1000);
         }
-        assertThat(finished).as("All runs finished").isTrue();
+        assertThat(finished).describedAs("All runs finished").isTrue();
 
         // TODO Check each run passed and retrieve the run log
         // TODO Cant do that until the couchdb ras records the id in the dss
@@ -516,7 +516,7 @@ public class RunDockerTests {
 
             Thread.sleep(1000);
         }
-        assertThat(deleted).as("All runs deleted").isTrue();
+        assertThat(deleted).describedAs("All runs deleted").isTrue();
     }
 
     /**
@@ -557,7 +557,7 @@ public class RunDockerTests {
 
             Thread.sleep(1000);
         }
-        assertThat(deleted).as("All run containers deleted").isTrue();
+        assertThat(deleted).describedAs("All run containers deleted").isTrue();
     }
 
     // TODO Further integration testing
@@ -600,7 +600,7 @@ public class RunDockerTests {
     private void putRunProperty(String runName, String property, String value) throws IpNetworkManagerException {
         String response = shell.issueCommand(
                 "ETCDCTL_API=3 etcdctl put dss.framework.run." + runName + "." + property + " '" + value + "'");
-        assertThat(response).as("PUT was OK").contains("OK"); // check we exited 0
+        assertThat(response).describedAs("PUT was OK").contains("OK"); // check we exited 0
     }
 
     // TODO retrieve all the RAS and docker logs etc
@@ -612,7 +612,7 @@ public class RunDockerTests {
 //	@AfterClass
 //	public void getLogs() throws Exception {
 //		String response = this.shell.issueCommand("zip -r -9 galasa.zip .galasa;echo zip-rc=$?");
-//		assertThat(response).as("zip rc check is 0").contains("zip-rc=0"); // check we exited 0
+//		assertThat(response).describedAs("zip rc check is 0").contains("zip-rc=0"); // check we exited 0
 //		
 //		Path zip = this.homePath.resolve("galasa.zip");  // the zip file
 //		Path sazip = this.storedArtifactRoot.resolve("galasa.zip"); // stored artifact file

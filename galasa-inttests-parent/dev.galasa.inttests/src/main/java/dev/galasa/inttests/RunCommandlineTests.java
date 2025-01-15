@@ -131,7 +131,7 @@ public class RunCommandlineTests {
         // *** Retrieve the runtime zip from the maven repository
         String response = this.shell.issueCommand(
                 "mvn -B org.apache.maven.plugins:maven-dependency-plugin:2.8:get -Dartifact=dev.galasa:runtime:0.3.0-SNAPSHOT:zip > mvn.log;echo maven-rc=$?");
-        assertThat(response).as("maven rc search").contains("maven-rc=0"); // check we exited 0
+        assertThat(response).describedAs("maven rc search").contains("maven-rc=0"); // check we exited 0
         Path log = this.homePath.resolve("mvn.log"); // the log file
         Path saLog = this.storedArtifactRoot.resolve("mvn.log"); // stored artifact file
         Files.copy(log, saLog); // copy it
@@ -141,7 +141,7 @@ public class RunCommandlineTests {
         // *** Unzip the runtime to get the galasa-boot
         response = this.shell.issueCommand(
                 "unzip -o .m2/repository/dev/galasa/runtime/0.3.0-SNAPSHOT/runtime-0.3.0-SNAPSHOT.zip > unzip.log;echo zip-rc=$?");
-        assertThat(response).as("zip rc search").contains("zip-rc=0"); // check we exited 0
+        assertThat(response).describedAs("zip rc search").contains("zip-rc=0"); // check we exited 0
         log = this.homePath.resolve("unzip.log"); // the log file
         saLog = this.storedArtifactRoot.resolve("unzip.log"); // the stored artifact
         Files.copy(log, saLog); // copy it
@@ -182,23 +182,23 @@ public class RunCommandlineTests {
         Path runLog = this.storedArtifactRoot.resolve("coreivt.log"); // the stored artifact
         Files.copy(log, runLog); // copy to stored artifacts
 
-        assertThat(response).as("run command").contains("galasa-boot-rc=0"); // check we exited 0
+        assertThat(response).describedAs("run command").contains("galasa-boot-rc=0"); // check we exited 0
 
-        assertThat(response).as("check there were no warnings issued").doesNotContain("WARNING"); // make sure java
+        assertThat(response).describedAs("check there were no warnings issued").doesNotContain("WARNING"); // make sure java
                                                                                                   // didnt issue
                                                                                                   // warnings;
 
         // *** Pull the run log so we can extract the run name
         String sLog = new String(Files.readAllBytes(log));
         Matcher matcher = runNamePattern.matcher(sLog);
-        assertThat(matcher.find()).as("Finding run name in log").isTrue(); // Check that the run name is in the log
+        assertThat(matcher.find()).describedAs("Finding run name in log").isTrue(); // Check that the run name is in the log
         String runName = matcher.group(1);
 
         logger.info("The CoreIVT test was run name " + runName);
 
         // *** Retrieve the Test Structure
         Path structureFile = this.homePath.resolve(".galasa/ras/" + runName + "/structure.json");
-        assertThat(Files.exists(structureFile)).as("Test structure exists on test server for this run").isTrue(); // Check
+        assertThat(Files.exists(structureFile)).describedAs("Test structure exists on test server for this run").isTrue(); // Check
                                                                                                                   // that
                                                                                                                   // the
                                                                                                                   // test
@@ -209,7 +209,7 @@ public class RunCommandlineTests {
         TestStructure testStructure = gson.fromJson(sStructure, TestStructure.class);
 
         // *** Check the test passed
-        assertThat(testStructure.getResult()).as("The test structure indicates the test passes").isEqualTo("Passed");
+        assertThat(testStructure.getResult()).describedAs("The test structure indicates the test passes").isEqualTo("Passed");
 
     }
 
@@ -221,7 +221,7 @@ public class RunCommandlineTests {
     @AfterClass
     public void getLogs() throws Exception {
         String response = this.shell.issueCommand("zip -r -9 galasa.zip .galasa;echo zip-rc=$?");
-        assertThat(response).as("zip rc check is 0").contains("zip-rc=0"); // check we exited 0
+        assertThat(response).describedAs("zip rc check is 0").contains("zip-rc=0"); // check we exited 0
 
         Path zip = this.homePath.resolve("galasa.zip"); // the zip file
         Path sazip = this.storedArtifactRoot.resolve("galasa.zip"); // stored artifact file
