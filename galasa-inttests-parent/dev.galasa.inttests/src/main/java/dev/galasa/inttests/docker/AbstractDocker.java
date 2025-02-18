@@ -36,10 +36,8 @@ public abstract class AbstractDocker {
 		getEcosystem().setCpsProperty("docker.engine.DKRTESTENGINE.max.slots", "3");
 
 		// TODO: remove hard coded values
-		getEcosystem().setCpsProperty("docker.default.registries", "HARBOR,PROXY");
-		getEcosystem().setCpsProperty("docker.registry.HARBOR.url", "https://harbor.galasa.dev");
-		getEcosystem().setCpsProperty("docker.registry.PROXY.url", "https://harbor.galasa.dev");
-		getEcosystem().setCpsProperty("docker.registry.PROXY.image.prefix", "docker_proxy_cache");
+		getEcosystem().setCpsProperty("docker.default.registries", "GHCR");
+		getEcosystem().setCpsProperty("docker.registry.GHCR.url", "https://ghcr.io");
 	}
 	
 	@Test
