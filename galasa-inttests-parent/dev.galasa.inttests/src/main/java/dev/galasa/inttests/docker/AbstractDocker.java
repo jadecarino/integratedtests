@@ -38,6 +38,7 @@ public abstract class AbstractDocker {
 		// TODO: remove hard coded values
 		getEcosystem().setCpsProperty("docker.default.registries", "GHCR");
 		getEcosystem().setCpsProperty("docker.registry.GHCR.url", "https://ghcr.io");
+		getEcosystem().setCpsProperty("docker.registry.GHCR.busybox.image", "galasa-dev/busybox:1.36.1");
 	}
 	
 	@Test
