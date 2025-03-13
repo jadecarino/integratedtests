@@ -86,7 +86,7 @@ subprojects {
  //   }
 
     dependencies {
-        implementation platform('dev.galasa:galasa-bom:0.40.0')
+        implementation platform('dev.galasa:galasa-bom:0.41.0')
 
         compileOnly 'dev.galasa:dev.galasa'
         compileOnly 'dev.galasa:dev.galasa.framework'
