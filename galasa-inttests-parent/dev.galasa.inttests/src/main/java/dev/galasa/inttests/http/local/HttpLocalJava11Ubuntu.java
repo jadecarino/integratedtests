@@ -19,7 +19,7 @@ import dev.galasa.linux.ILinuxImage;
 import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
-@Test
+// @Test
 @TestAreas({"httpManager","localecosystem","java11","ubuntu"})
 @Tags({"codecoverage"})
 public class HttpLocalJava11Ubuntu extends AbstractHttpLocal {

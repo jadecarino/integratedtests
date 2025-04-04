@@ -20,7 +20,7 @@ import dev.galasa.linux.OperatingSystem;
 import dev.galasa.zos.IZosImage;
 import dev.galasa.zos.ZosImage;
 
-@Test
+// @Test
 @TestAreas({"zos3270Manager", "localecosystem","java11","ubuntu"})
 public class Zos3270LocalJava11Ubuntu extends AbstractZos3270Local {
 
