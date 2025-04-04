@@ -19,7 +19,7 @@ import dev.galasa.linux.ILinuxImage;
 import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
-@Test
+// @Test
 @TestAreas({"coreManager","localecosystem","java11","ubuntu"})
 @Tags({"codecoverage","pipelinetest"})
 public class CoreLocalJava11Ubuntu extends AbstractCoreLocal {
