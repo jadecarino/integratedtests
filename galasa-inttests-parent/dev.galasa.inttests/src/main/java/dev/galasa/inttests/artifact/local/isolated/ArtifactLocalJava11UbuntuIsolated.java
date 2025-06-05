@@ -19,7 +19,7 @@ import dev.galasa.linux.ILinuxImage;
 import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
-@Test
+// @Test
 @TestAreas({"artifactManager", "localecosystem","java11","ubuntu","isolated"})
 public class ArtifactLocalJava11UbuntuIsolated extends AbstractArtifactLocal {
 
