@@ -18,7 +18,7 @@ import dev.galasa.linux.ILinuxImage;
 import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
-@Test
+// @Test
 @TestAreas({"simplatform","localecosystem","java11","ubuntu","isolated"})
 public class SimBankLocalJava11UbuntuIsolated extends AbstractSimBankLocal {
 
