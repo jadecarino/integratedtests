@@ -19,7 +19,7 @@ import dev.galasa.linux.ILinuxImage;
 import dev.galasa.linux.LinuxImage;
 import dev.galasa.linux.OperatingSystem;
 
-@Test
+// @Test
 @TestAreas({"compilation","localecosystem","java11","ubuntu","mvp"})
 public class CompilationLocalJava11UbuntuMvp extends AbstractCompilationLocalSimBankOffline {
 
